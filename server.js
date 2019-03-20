@@ -62,7 +62,7 @@ const User = sequelize.define('users', {
 });
 
 const Course = sequelize.define('courses', {
-    name: Sequelize.STRING
+    name: Sequelize.STRING 
 });
 
 const Topic = sequelize.define('topics', {
@@ -126,7 +126,6 @@ app.post('/courses', async(req,res) => {
             name : req.body.name
         }
     })
-
     if (!checkCourse) {
         let newCourse = await Course.create({
             name : req.body.name
