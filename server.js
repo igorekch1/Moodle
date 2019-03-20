@@ -55,12 +55,14 @@ const sequelize = new Sequelize('moodle', 'root', 'Kingkongloxlox123',  {
 const User = sequelize.define('users', {
     login: Sequelize.STRING,
     password: Sequelize.STRING,
-    role: Sequelize.STRING
+    role: {
+        type: Sequelize.ENUM("admin", "user"),
+        defaultValue : "user"
+    }
 });
 
 const Course = sequelize.define('courses', {
-    name: Sequelize.STRING,
-    creatorId: Sequelize.INTEGER
+    name: Sequelize.STRING
 });
 
 const Topic = sequelize.define('topics', {
@@ -75,13 +77,23 @@ const Test = sequelize.define('test', {
 
 const Question = sequelize.define('question', {
     testId: Sequelize.INTEGER,
-    name: Sequelize.STRING
+    name: Sequelize.STRING,
+    type : Sequelize.ENUM("CHECKBOX","RADIOBUTTON")
 });
 
 const Answer = sequelize.define('answer', {
     testId: Sequelize.INTEGER,
     name: Sequelize.STRING // then split + join (checkboxes)
 });
+
+User.belongsToMany(Course,{through: "user_course"});
+Course.belongsToMany(User,{through: "user_course"});
+
+Course.hasMany(Topic);
+Topic.belongsTo(Course);
+
+Topic.hasMany(Test);
+Test.belongsTo(Topic);
 
 Test.hasMany(Question);
 Question.belongsTo(Test);
@@ -96,26 +108,19 @@ Test.belongsToMany(User, {
     through: "user_test"
 });
 
-User.belongsToMany(Course,{through: "user_course"});
-Course.belongsToMany(User,{through: "user_course"});
-Course.belongsTo(User, {as: "creator"});
-
-Course.hasMany(Topic);
-Topic.belongsTo(Course);
-
 sequelize.sync();
 
 app.use (express.static('public'));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieSession({
-    name: 'session',
-    keys: 'TopSecret'
-}));
+        name: 'session',
+        keys: 'TopSecret'
+    })
+);
 
 //------- Post a new Course w/ checking if exists -------
-app.post('/courses/:creatorId', async(req,res) => {
-    console.log("creator - ", req.params.creatorId);
+app.post('/courses', async(req,res) => {
     let checkCourse = await Course.findOne({
         where : {
             name : req.body.name
@@ -124,8 +129,7 @@ app.post('/courses/:creatorId', async(req,res) => {
 
     if (!checkCourse) {
         let newCourse = await Course.create({
-            name : req.body.name,
-            creatorId : req.params.creatorId
+            name : req.body.name
         });
         res.status(201);
         res.end(JSON.stringify(newCourse));
@@ -185,29 +189,43 @@ app.post('/login', async(req,res) => {
             password: req.body.password
         }
     })
-    
+    console.log(JSON.stringify(checkUser))
     if (checkUser) {
+        checkUser = JSON.parse(JSON.stringify(checkUser));
+        req.session.auth = checkUser;
+        req.session.auth.loggedIn = true;
+        res.write(JSON.stringify(req.session.auth))
         res.status(200);
-        res.end(JSON.stringify(checkUser.role));
+        console.log(req.session.auth);
+        res.end();  
     } else {
         res.status(409);
         res.end();
-        throw new Error("User doesn't exist");
     }
 });
 //--------------------------------------------------------------------
 
 //---------------- SIGNUP ------------------
 app.post('/signup', async(req, res) => {
-    console.log(req.body)
-    let newUser = await User.create({
-        login: req.body.login,
-        password: req.body.password,
-        role: req.body.role
+    let checkIfExists = await User.findOne({
+        where: {
+            login: req.body.login
+        }
     })
-
-    res.status(201);
-    res.end(JSON.stringify(newUser))
+    console.log(!checkIfExists)
+    if (!checkIfExists) {
+        let user = await User.create({
+            login: req.body.login,
+            password: req.body.password,
+            role: req.body.role
+        })
+    
+        res.status(201);
+        res.end(JSON.stringify({created: true}))
+    } else {
+        res.status(409);
+        res.end(JSON.stringify({created: false}));
+    }
 });
 //------------------------------------------
 
