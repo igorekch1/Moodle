@@ -24,7 +24,7 @@ export const fetch_topics = (id) => dispatch => {
     })
 }
 
-export const create_topics = (name, content, id) => dispatch => {
+export const create_topic = (name, content, id) => dispatch => {
     fetch(`http://localhost:5000/topics/${id}`, {
         headers: {
             'Accept': 'application/json',

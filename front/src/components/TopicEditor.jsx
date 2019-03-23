@@ -69,19 +69,13 @@ class TopicEditor extends Component {
         this.sendEditText = this.sendEditText.bind(this);
     }
 
-        // componentWillMount() {
-        //     this.setState({
-        //         markdown: this.props.currentTopic.content
-        //     })
-        // }
-
     componentDidMount() {
-        console.log("current topic - ",this.props.currentTopic)
+        console.log("course id - ", this.props.courseId)
         this.setState({
             markdown: `${this.props.currentTopic ? this.props.currentTopic.content: ''}`
         })
     }
-
+    
     
     render() {
         return (
@@ -90,7 +84,9 @@ class TopicEditor extends Component {
                     <Link to="/admin">
                         <h4><i className="fas fa-arrow-circle-left"></i> Back to topics</h4>
                     </Link>
-                    <h3>Topic <span style={{color:"#ca1111"}}>"{this.props.currentTopic? this.props.currentTopic.name: ''}"</span> is now being edited... </h3>
+                    {this.props.currentTopic && this.props.currentTopic.name ? 
+                        <h3>Topic <span style={{color:"#ca1111"}}>"{this.props.currentTopic ? this.props.currentTopic.name: ''}"</span> is now being edited... </h3>
+                    : <h3 style={{color:"#ca1111"}}>{this.state.topicName}</h3> }
                 </Row>
                 <Form className="mt-4">
                     <Form.Group as={Row} controlId="formPlaintextTopic">    
@@ -136,16 +132,16 @@ class TopicEditor extends Component {
 
     sendEditText(e) {
         e.preventDefault();
-        console.log(this.state.markdown)
-        console.log(this.state.topicName)
+        // TODO: Add topic in DOM 
+        this.props.create_topic(this.state.topicName, this.state.markdown, this.props.courseId);
+        this.props.history.push("/admin");
     }
 }
 
 const mapStateToProps = state => ({
     topicId: state.topic.currentId,
-    currentTopic: state.topic.currentTopic
+    currentTopic: state.topic.currentTopic,
+    courseId: state.course.courseId
 })
 
-
-// export default TopicEditor;
-export default connect(mapStateToProps, {})(TopicEditor);
+export default connect(mapStateToProps, { create_topic })(TopicEditor);

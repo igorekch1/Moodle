@@ -15,6 +15,7 @@ export default function(state = initialState, action) {
             }
 
         case CREATE_TOPIC: 
+        console.log(action.payload)
             return {
                 ...state,
                 topicItem: action.payload

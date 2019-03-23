@@ -11,9 +11,7 @@ class Topic extends Component {
     }
 
     componentDidMount() {
-        console.log("course id - ",this.props.idCourse)
         this.props.fetch_topics(this.props.idCourse);
-        console.log(this.props.topics)
         // this.intervalIdTopic = setInterval(this.props.fetch_topics.bind(this, this.props.idCourse), 3000);
     }
 

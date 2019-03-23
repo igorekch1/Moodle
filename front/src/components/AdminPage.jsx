@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetch_courses, create_course, reset_current_courseid } from "../actions/courseAction";
+import { fetch_courses, create_course, reset_current_courseid, set_current_courseId } from "../actions/courseAction";
 import { reset_current_topic } from "../actions/topicAction";
 import { Container, Row, Col, ButtonToolbar, Button, InputGroup, FormControl, CardColumns, Card } from "react-bootstrap";
 import ModalInput from "./ModalInput";
@@ -25,7 +25,7 @@ class AdminPage extends Component {
 
     componentDidMount() {
         this.props.fetch_courses();
-        // this.intervalIdCourse = setInterval(this.props.fetch_courses, 3000);
+        this.intervalIdCourse = setInterval(this.props.fetch_courses, 3000);
     }
 
     componentWillUnmount() {
@@ -102,6 +102,7 @@ class AdminPage extends Component {
                                         <div className="mt-3">
                                             <i className="fa fa-plus" aria-hidden="true" style={{color:'#00ff00', marginRight: '5px'}}></i> 
                                             <span className="Create-topic-link"
+                                                data-id = {course.id}
                                                 onClick={this.goToTopicEditor}   
                                             >   Create new topic
                                             </span>
@@ -138,12 +139,11 @@ class AdminPage extends Component {
 
     // reset current topic when link on creating new topic
     goToTopicEditor(e){
+        let course_id = e.target.getAttribute("data-id");
+        this.props.set_current_courseId(course_id);
         this.props.reset_current_topic();
-        this.props.reset_current_courseid();
-        console.log(this.props.currentTopic, " ", this.props.idCourse)
-        // console.log(e.target.getAttribute("data-id"))
-        this.props.history.push("/editor")
-        // e.stopPropagation()
+        // this.props.reset_current_courseid();
+        this.props.history.push("/editor");
     }
 }
 
@@ -154,10 +154,10 @@ AdminPage.defaultProps = {
 const mapStateToProps = state => ({
     courses: state.course.allCourses,
     newCourse: state.course.courseItem,
-    idCourse: state.course.courseId,
+    courseId: state.course.courseId,
     currentTopic: state.topic.currentTopic,
     // userId: state.login.userId,
     userName: state.login.userName
 })
 
-export default connect(mapStateToProps, { fetch_courses, create_course, reset_current_topic, reset_current_courseid })(AdminPage);
+export default connect(mapStateToProps, { fetch_courses, create_course, reset_current_topic, reset_current_courseid, set_current_courseId })(AdminPage);

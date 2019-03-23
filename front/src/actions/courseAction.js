@@ -1,4 +1,11 @@
-import { FETCH_COURSES, CREATE_COURSE, RESET_CURRENT_COURSEID } from "./types";
+import { FETCH_COURSES, CREATE_COURSE, RESET_CURRENT_COURSEID, SET_CURRENT_COURSE } from "./types";
+
+export const set_current_courseId = (id) => dispatch => {
+    dispatch({
+        type: SET_CURRENT_COURSE,
+        payload: {id}
+    })
+}
 
 export const reset_current_courseid = () => dispatch => {
     dispatch({
