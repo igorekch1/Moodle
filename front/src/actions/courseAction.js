@@ -11,7 +11,7 @@ export const fetch_courses = () => dispatch => {
     })
 }
 
-export const create_course = (name) => dispatch => {
+export const create_course = (name, description) => dispatch => {
     fetch("http://localhost:5000/courses", {
         headers: {
             'Accept': 'application/json',
@@ -19,7 +19,8 @@ export const create_course = (name) => dispatch => {
         },
         method: "POST",
         body: JSON.stringify({
-            name
+            name,
+            description
         })
     })
     .then(res => res.json())

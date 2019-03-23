@@ -23,12 +23,11 @@ class ModalInput extends Component {
                 </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <h6>Enter the course name</h6>
-                {this.props.children}
+                    {this.props.children}
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={this.props.onHide}>Close</Button>
-                <Button variant="primary" onClick={this.saveNexit}>Save changes</Button>
+                    <Button variant="secondary" onClick={this.props.onHide}>Close</Button>
+                    <Button variant="primary" onClick={this.saveNexit}>Save</Button>
                 </Modal.Footer>
             </Modal>
         );

@@ -7,6 +7,7 @@ import store from "./store";
 import Login from "./components/Login";
 import Signup from "./components/Signup"; 
 import AdminPage from './components/AdminPage';
+import TopicEditor from "./components/TopicEditor";
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
               <Route path = "/" component = {Login} exact/>
               <Route path = "/signup" component = {Signup}/>
               <Route path = "/admin" component = {AdminPage}/>
+              <Route path= "/editor" component = {TopicEditor}/>
             </Switch>
           </div>
         </Router>

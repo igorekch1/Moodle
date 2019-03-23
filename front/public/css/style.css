@@ -1,0 +1,39 @@
+.Container {
+    padding: 0;
+    margin: 0;
+}
+
+.Header {
+    /* display: flex; */
+    /* align-items: center; */
+    height: 70px;
+    padding: 0 30px;
+    background-color: #000000;
+}
+
+.Logout-btn {
+    line-height: 70px;
+}
+
+.Header-greeting {
+    line-height: 70px;
+    font-size: 24px;  
+    font-weight: 700;  
+    color: #ffffff;
+}
+
+.Btn-create-topic {
+    margin-top: 40px;
+}
+
+.Topic-cards {
+    padding: 40px 140px;
+}
+
+.Create-topic-link {
+    cursor: pointer;
+}
+
+.Create-topic-link:hover {
+    color: #00ff00;
+}

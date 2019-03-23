@@ -62,7 +62,8 @@ const User = sequelize.define('users', {
 });
 
 const Course = sequelize.define('courses', {
-    name: Sequelize.STRING 
+    name: Sequelize.STRING,
+    description: Sequelize.STRING
 });
 
 const Topic = sequelize.define('topics', {
@@ -128,7 +129,8 @@ app.post('/courses', async(req,res) => {
     })
     if (!checkCourse) {
         let newCourse = await Course.create({
-            name : req.body.name
+            name : req.body.name,
+            description: req.body.description
         });
         res.status(201);
         res.end(JSON.stringify(newCourse));
@@ -147,8 +149,19 @@ app.get('/courses', async(req,res) => {
 });
 //-------------------------------
 
+//------- GET ALL TOPICS FROM CONCRETE COURSES -------
+app.get('/topics/:courseId', async(req,res) => {
+    console.log(req.params.courseId)
+    let courseId = await Course.findById(req.params.courseId);
+    let topics = await courseId.getTopics();
+    res.status(200);
+    res.end(JSON.stringify(topics)); 
+});
+//----------------------------------------------------
+
 //------- Post a new Topic w/ checking if exists -------
 app.post('/topics/:courseId', async(req,res) => {
+    console.log(req.params.courseId)
     let checkTopic = await Topic.findOne({
         where : {
             name : req.body.name
@@ -170,15 +183,6 @@ app.post('/topics/:courseId', async(req,res) => {
     }
 });
 //-------------------------------------------------------
-
-//------- GET ALL TOPICS FROM CONCRETE COURSES -------
-app.get('/topics/:courseId', async(req,res) => {
-    let courseId = await Course.findById(req.params.courseId);
-    let topics = await courseId.getTopics();
-    res.status(200);
-    res.end(JSON.stringify(topics)); 
-});
-//----------------------------------------------------
 
 //------- Login w/ checking the role og user(teacher/student) --------
 app.post('/login', async(req,res) => {
