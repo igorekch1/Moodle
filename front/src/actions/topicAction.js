@@ -1,4 +1,10 @@
-import { FETCH_TOPICS, CREATE_TOPIC, CURRENT_TOPIC } from "./types";
+import { FETCH_TOPICS, CREATE_TOPIC, CURRENT_TOPIC, RESET_CURRENT_TOPIC } from "./types";
+
+export const reset_current_topic = () => dispatch => {
+    dispatch({
+        type: RESET_CURRENT_TOPIC
+    })
+}
 
 export const set_current_topic = (topic) => dispatch => {
     dispatch({

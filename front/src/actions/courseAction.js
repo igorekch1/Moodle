@@ -1,4 +1,10 @@
-import { FETCH_COURSES, CREATE_COURSE } from "./types";
+import { FETCH_COURSES, CREATE_COURSE, RESET_CURRENT_COURSEID } from "./types";
+
+export const reset_current_courseid = () => dispatch => {
+    dispatch({
+        type: RESET_CURRENT_COURSEID
+    })
+}
 
 export const fetch_courses = () => dispatch => {
     fetch("http://localhost:5000/courses")

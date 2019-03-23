@@ -76,9 +76,9 @@ class TopicEditor extends Component {
         // }
 
     componentDidMount() {
-        console.log(this.props.currentTopic)
+        console.log("current topic - ",this.props.currentTopic)
         this.setState({
-            markdown: `${this.props.currentTopic.content}`
+            markdown: `${this.props.currentTopic ? this.props.currentTopic.content: ''}`
         })
     }
 
@@ -90,7 +90,7 @@ class TopicEditor extends Component {
                     <Link to="/admin">
                         <h4><i className="fas fa-arrow-circle-left"></i> Back to topics</h4>
                     </Link>
-                    <h3>Topic <span style={{color:"#ca1111"}}>"{this.props.currentTopic.name}"</span> is now being edited... </h3>
+                    <h3>Topic <span style={{color:"#ca1111"}}>"{this.props.currentTopic? this.props.currentTopic.name: ''}"</span> is now being edited... </h3>
                 </Row>
                 <Form className="mt-4">
                     <Form.Group as={Row} controlId="formPlaintextTopic">    

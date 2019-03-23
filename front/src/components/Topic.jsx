@@ -11,8 +11,10 @@ class Topic extends Component {
     }
 
     componentDidMount() {
+        console.log("course id - ",this.props.idCourse)
         this.props.fetch_topics(this.props.idCourse);
-        this.intervalIdTopic = setInterval(this.props.fetch_topics.bind(this, this.props.idCourse), 3000);
+        console.log(this.props.topics)
+        // this.intervalIdTopic = setInterval(this.props.fetch_topics.bind(this, this.props.idCourse), 3000);
     }
 
     componentWillUnmount() {
@@ -47,7 +49,8 @@ class Topic extends Component {
 
 const mapStateToProps = state => ({
     topics: state.topic.allTopics,
-    currentTopic: state.topic.currentTopic
+    currentTopic: state.topic.currentTopic,
+    courseId: state.course.courseId
 });
 
 export default connect(mapStateToProps, { fetch_topics, set_current_topic })(Topic);

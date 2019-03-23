@@ -1,11 +1,9 @@
-import { FETCH_TOPICS, CREATE_TOPIC, CURRENT_TOPIC} from "../actions/types";
+import { FETCH_TOPICS, CREATE_TOPIC, CURRENT_TOPIC, RESET_CURRENT_TOPIC } from "../actions/types";
 
 const initialState = {
     allTopics: [],
     topicItem: {},
-    currentTopic: {},
-    currentId: null,
-    currentName: ''
+    currentTopic: {}
 }
 
 export default function(state = initialState, action) {
@@ -26,8 +24,12 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 currentTopic: action.payload
-                // currentId: action.payload[0],
-                // currentName: action.payload[1]
+            }
+
+        case RESET_CURRENT_TOPIC:
+            return {
+                ...state,
+                currentTopic: null
             }
         
         default:
