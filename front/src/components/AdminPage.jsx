@@ -25,7 +25,7 @@ class AdminPage extends Component {
 
     componentDidMount() {
         this.props.fetch_courses();
-        this.intervalIdCourse = setInterval(this.props.fetch_courses, 3000);
+        // this.intervalIdCourse = setInterval(this.props.fetch_courses, 3000);
     }
 
     componentWillUnmount() {
@@ -156,7 +156,7 @@ const mapStateToProps = state => ({
     newCourse: state.course.courseItem,
     courseId: state.course.courseId,
     currentTopic: state.topic.currentTopic,
-    // userId: state.login.userId,
+    userId: state.login.userId,
     userName: state.login.userName
 })
 

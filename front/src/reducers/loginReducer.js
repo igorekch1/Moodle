@@ -4,7 +4,8 @@ const initialState = {
     loggedIn : false,
     errorOccured: false,
     userId : null,
-    userName: null
+    userName: null,
+    userRole: null
 }
 
 export default function(state = initialState, action) {
@@ -16,7 +17,8 @@ export default function(state = initialState, action) {
                 loggedIn: true,
                 errorOccured: false,
                 userId: action.payload.id,
-                userName: action.payload.login
+                userName: action.payload.login,
+                userRole: action.payload.role
             }
         } else {
             return {

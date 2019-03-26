@@ -192,14 +192,14 @@ app.post('/login', async(req,res) => {
             password: req.body.password
         }
     })
-    console.log(JSON.stringify(checkUser))
+    console.log("check - ",JSON.stringify(checkUser))
     if (checkUser) {
         checkUser = JSON.parse(JSON.stringify(checkUser));
         req.session.auth = checkUser;
         req.session.auth.loggedIn = true;
         res.write(JSON.stringify(req.session.auth))
         res.status(200);
-        console.log(req.session.auth);
+        console.log("session - ",req.session.auth);
         res.end();  
     } else {
         res.status(409);

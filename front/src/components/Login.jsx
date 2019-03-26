@@ -20,6 +20,10 @@ class Login extends Component {
         this.login = this.login.bind(this);
     }
 
+    componentDidUpdate() {
+        if (this.props.loggedIn) this.props.history.push("/determinant");
+    }
+
     render() {
         return (
             <Container>
@@ -90,14 +94,14 @@ class Login extends Component {
         this.inputPassword.current.value = '';
         this.props.login(this.state.login, this.state.password);
         // this.checkIfSignuped();
-        this.props.history.push("/admin");
     }
 }
 
 const mapStateToProp = state => ({
     loggedIn: state.login.loggedIn,
     errorOccured: state.login.errorOccured,
-    userId: state.login.userId
+    userId: state.login.userId,
+    userRole: state.login.userRole
 })
 
 export default connect(mapStateToProp, { login })(Login);

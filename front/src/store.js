@@ -3,7 +3,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import rootRecuers from "./reducers";
 
-const initialState = {};
+const initialState = localStorage.getItem("reduxState") ? 
+    JSON.parse(localStorage.getItem("reduxState")) : {};
 
 const middleware = [thunk];
 

@@ -95,7 +95,8 @@ class TopicEditor extends Component {
                         </Form.Label>
                         <Col sm="5" style={{marginLeft:"-24px"}}>
                             <Form.Control type="text" 
-                                            placeholder="Enter here..." 
+                                            placeholder="Enter here..."
+                                            value = {this.props.currentTopic ? this.props.currentTopic.name: ''} 
                                             onChange = {this.handleTopic}              
                             />
                         </Col>
