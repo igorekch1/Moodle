@@ -8,12 +8,6 @@ import Topic from "./Topic";
 class CoursePage extends Component {
     constructor(props) {
         super(props);
-
-        this.state = { 
-            modalShow: false,
-            course_name: '',
-            course_description: ''
-        };
     }
 
     componentDidMount() {
@@ -33,8 +27,6 @@ class CoursePage extends Component {
 
     render() {
 
-        let modalClose = () => this.setState({ modalShow: false });
-
         return (
             <Container fluid className="Container">  
                 <Header user = {this.props.userName}/>
@@ -51,16 +43,7 @@ class CoursePage extends Component {
                                     </Card.Text>
                                     <Card.Title>
                                         {/* getting topics by course id */}
-                                        <Topic idCourse = {course.id}/>
-                                        <div className="mt-3">
-                                            <i className="fa fa-plus" aria-hidden="true" style={{color:'#00ff00', marginRight: '5px'}}></i> 
-                                            <span className="Create-topic-link"
-                                                data-id = {course.id}
-                                                onClick={this.goToTopicEditor}   
-                                            >   Create new topic
-                                            </span>
-                                        </div>
-                                            
+                                        <Topic idCourse = {course.id}/>  
                                     </Card.Title>
                                     </Card.Body>
                                     <Card.Footer>

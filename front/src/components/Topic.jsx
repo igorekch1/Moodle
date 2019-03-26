@@ -12,6 +12,7 @@ class Topic extends Component {
 
     componentDidMount() {
         this.props.fetch_topics(this.props.idCourse);
+        console.log(this.props.userRole)
         // this.intervalIdTopic = setInterval(this.props.fetch_topics.bind(this, this.props.idCourse), 3000);
     }
 
@@ -26,7 +27,7 @@ class Topic extends Component {
                     let self = topic;
                     return <div key = {topic.id}>
                                 <li>
-                                    <Link to="/editor"
+                                    <Link to = {this.props.userRole === "admin" ? "/editor" : "/topic"}
                                           data-id={JSON.stringify(self)} 
                                           onClick={this.setTopic}
                                     >
@@ -48,7 +49,8 @@ class Topic extends Component {
 const mapStateToProps = state => ({
     topics: state.topic.allTopics,
     currentTopic: state.topic.currentTopic,
-    courseId: state.course.courseId
+    courseId: state.course.courseId,
+    userRole: state.login.userRole
 });
 
 export default connect(mapStateToProps, { fetch_topics, set_current_topic })(Topic);
