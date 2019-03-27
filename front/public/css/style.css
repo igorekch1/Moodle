@@ -6,6 +6,9 @@
 .Header {
     /* display: flex; */
     /* align-items: center; */
+    position: fixed;
+    left: 0;
+    top: 0;
     height: 70px;
     padding: 0 30px;
     background-color: #000000;
@@ -36,4 +39,10 @@
 
 .Create-topic-link:hover {
     color: #00ff00;
+}
+
+.topic-content {
+    width: 75%;
+    padding: 40px;
+    border: 1px solid #ccc;
 }

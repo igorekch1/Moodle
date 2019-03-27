@@ -43,7 +43,8 @@ class CoursePage extends Component {
                                     </Card.Text>
                                     <Card.Title>
                                         {/* getting topics by course id */}
-                                        <Topic idCourse = {course.id}/>  
+                                        <Topic idCourse = {course.id}
+                                        />  
                                     </Card.Title>
                                     </Card.Body>
                                     <Card.Footer>

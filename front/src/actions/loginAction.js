@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, ERROR_OCCURED } from './types';
+import { LOGIN, SIGNUP, LOGOUT, ERROR_OCCURED } from './types';
 
 export const login = (login, password) => dispatch => {
     fetch("http://localhost:5000/login", {
@@ -20,6 +20,7 @@ export const login = (login, password) => dispatch => {
         }
     })
     .then(data => {
+        console.log(data)
         dispatch({
             type: LOGIN,
             payload: data
@@ -62,6 +63,18 @@ export const signup = (login, password) => dispatch => {
         dispatch({
             type: ERROR_OCCURED,
             payload: err
+        })
+    })
+}
+
+export const logout = () => dispatch => {
+    fetch("http://localhost:5000/logout")
+    .then(res => res.json())
+    .then(data => {
+        console.log(data)
+        dispatch({
+            type: LOGOUT,
+            payload: data
         })
     })
 }

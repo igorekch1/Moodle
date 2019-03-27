@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP } from "../actions/types";
+import { LOGIN, SIGNUP, LOGOUT } from "../actions/types";
 
 const initialState = {
     loggedIn : false,
@@ -10,6 +10,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch(action.type) {
+
         case LOGIN :
         if (action.payload.loggedIn) {
             return {
@@ -42,6 +43,17 @@ export default function(state = initialState, action) {
                 loggedIn: false,
                 errorOccured: true
             }
+        }
+
+        case LOGOUT:
+        console.log(action.payload)
+        return {
+            ...state,
+            loggedIn: false,
+            errorOccured: false,
+            userId: null,
+            userName: null,
+            userRole: null
         }
 
         default: 

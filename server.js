@@ -192,14 +192,15 @@ app.post('/login', async(req,res) => {
             password: req.body.password
         }
     })
-    console.log("check - ",JSON.stringify(checkUser))
     if (checkUser) {
         checkUser = JSON.parse(JSON.stringify(checkUser));
+        console.log("checkUser - ",JSON.stringify(checkUser))
+        delete req.password;
         req.session.auth = checkUser;
         req.session.auth.loggedIn = true;
         res.write(JSON.stringify(req.session.auth))
         res.status(200);
-        console.log("session - ",req.session.auth);
+        console.log("session auth - ",req.session.auth);
         res.end();  
     } else {
         res.status(409);
@@ -231,6 +232,15 @@ app.post('/signup', async(req, res) => {
     }
 });
 //------------------------------------------
+
+//----------------- LOGOUT -----------------
+app.get('/logout', (req, res) => {
+    console.log("session - ",req.session)
+    console.log("session auth - ", req.session.auth)
+    res.status(200);
+    res.end();
+})
+// -----------------------------------------
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
