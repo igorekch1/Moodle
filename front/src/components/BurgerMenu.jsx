@@ -15,7 +15,7 @@ class BurgerMenu extends Component {
                       width = { '20%' }
                 >
                     {this.props.menuItems.map(item => {
-                        return <a id="home" className="menu-item" href="/">{item.name}</a>
+                        return <a key = {item.id} id="home" className="menu-item" href="/">{item.name}</a>
                     })}
                 </Menu>
                 <main id="page-wrap">

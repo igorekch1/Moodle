@@ -12,6 +12,7 @@ class Header extends Component{
 
     render() {
         return (
+            <div className="header-wrapper">
             <Container fluid className="Header">
                 <Row className="justify-content-between">
                     <Col xs="2" className="Header-greeting">Logotype mVzVhVkV</Col>
@@ -27,6 +28,7 @@ class Header extends Component{
                     </Col>
                 </Row>
             </Container>
+            </div>
         )
     }
 

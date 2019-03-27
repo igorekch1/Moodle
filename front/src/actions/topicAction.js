@@ -17,7 +17,6 @@ export const fetch_topics = (id) => dispatch => {
     fetch(`http://localhost:5000/topics/${id}`)
     .then(res => res.json())
     .then(topics => {
-        console.log(topics)
         dispatch({
             type: FETCH_TOPICS,
             payload: topics

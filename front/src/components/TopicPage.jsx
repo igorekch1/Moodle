@@ -28,15 +28,14 @@ class TopicPage extends Component {
             <Container fluid className="Container">  
 
                 <Header user = {this.props.userName}/>
-                
-                {/* <Row noGutters className="d-flex justify-content-between mt-3 pl-4 pr-4" style={{padding:'0 40px'}}>
-                    <Link to="/courses">
-                        <h4><i className="fas fa-arrow-circle-left"></i> Back to courses</h4>
-                    </Link>
-                    <h3 style={{color:"#ca1111"}}>{this.props.currentTopic.name}</h3>
-                </Row> */}
 
                 <BurgerMenu menuItems = {this.props.topics}>
+                    <Row noGutters className="page-title">
+                        <h3 style={{color:"#ca1111"}}>{this.props.currentTopic.name}</h3>
+                        <Link to="/courses">
+                            <h4><i className="fas fa-arrow-circle-left"></i> Back to courses</h4>
+                        </Link>
+                    </Row>
                     <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}} className = "topic-content"/>
                 </BurgerMenu>
 
