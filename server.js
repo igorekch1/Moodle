@@ -152,7 +152,7 @@ app.get('/courses', async(req,res) => {
 //------- GET ALL TOPICS FROM CONCRETE COURSES -------
 app.get('/topics/:courseId', async(req,res) => {
     console.log(req.params.courseId)
-    let courseId = await Course.findById(req.params.courseId);
+    let courseId = await Course.findByPk(req.params.courseId);
     let topics = await courseId.getTopics();
     res.status(200);
     res.end(JSON.stringify(topics)); 
@@ -182,6 +182,17 @@ app.post('/topics/:courseId', async(req,res) => {
         throw new Error("Topic already exists");
     }
 });
+//-------------------------------------------------------
+
+//-------------------- Delete topic ---------------------
+app.delete('/topics/del', async (req,res) => {
+    let removedTopic = await Topic.destroy({
+        where : {
+            id: req.body.id
+        }
+    })
+    res.status(200).end(JSON.stringify({removed: true}))
+})
 //-------------------------------------------------------
 
 //------- Login w/ checking the role og user(teacher/student) --------

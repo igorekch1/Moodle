@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { fetch_topics, create_topic } from "../actions/topicAction";
+import { fetch_topics, create_topic, delete_topic } from "../actions/topicAction";
 import { Link } from 'react-router-dom';
 import {Container, Button, Row, Col, Form} from "react-bootstrap";
 
@@ -67,13 +67,20 @@ class TopicEditor extends Component {
         }
 
         this.sendEditText = this.sendEditText.bind(this);
+        this.deleteCurTopic = this.deleteCurTopic.bind(this);
     }
 
     componentDidMount() {
-        console.log("course id - ", this.props.courseId)
         this.setState({
             markdown: `${this.props.currentTopic ? this.props.currentTopic.content: ''}`
         })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.newTopic) {
+            this.props.topics.push(nextProps.newTopic);
+        }
+        this.props.history.push("/admin");
     }
     
     
@@ -114,7 +121,15 @@ class TopicEditor extends Component {
                     </div>
                 </div>
                 <Row>
-                    <Col xs={{span:2, offset: 10}}>
+                    <Col  xs={{span:2, offset: 8}}>
+                        <Button variant="danger"
+                                block
+                                onClick = {this.deleteCurTopic}    
+                        >
+                            Delete this topic
+                        </Button>
+                    </Col>
+                    <Col xs={2}>
                         <Button variant="success" 
                                 block
                                 onClick = {this.sendEditText}
@@ -131,18 +146,23 @@ class TopicEditor extends Component {
 
     handleTopic = e => this.setState({ topicName: e.target.value })
 
+    deleteCurTopic(e) {
+        e.preventDefault();
+        this.props.delete_topic(this.props.currentTopic.id);
+    }
+
     sendEditText(e) {
         e.preventDefault();
-        // TODO: Add topic in DOM 
         this.props.create_topic(this.state.topicName, this.state.markdown, this.props.courseId);
-        this.props.history.push("/admin");
     }
 }
 
 const mapStateToProps = state => ({
+    topics: state.topic.allTopics,
+    newTopic: state.topic.topicItem,
     topicId: state.topic.currentId,
     currentTopic: state.topic.currentTopic,
     courseId: state.course.courseId
 })
 
-export default connect(mapStateToProps, { create_topic })(TopicEditor);
+export default connect(mapStateToProps, { create_topic, delete_topic })(TopicEditor);

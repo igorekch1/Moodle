@@ -17,7 +17,7 @@ class Header extends Component{
                 <Row className="justify-content-between">
                     <Col xs="2" className="Header-greeting">Logotype mVzVhVkV</Col>
                     <Col className="Header-greeting" xs="2">
-                        Welcome, {this.props.user}
+                        Signed in as: {this.props.user}
                     </Col>
                     <Col xs="2" className="Logout-btn">
                         <Button variant="danger"

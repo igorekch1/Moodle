@@ -24,11 +24,10 @@ class Topic extends Component {
         return (
             <div>
                 {this.props.topics.map((topic) => {
-                    let self = topic;
                     return <div key = {topic.id}>
                                 <li>
                                     <Link to = {this.props.userRole === "admin" ? "/editor" : "/topic"}
-                                          data-id={JSON.stringify(self)} 
+                                          data-id={JSON.stringify(topic)} 
                                           onClick={this.setTopicAndCourse}
                                     >
                                         {topic.name}

@@ -36,7 +36,7 @@ class TopicPage extends Component {
                             <h4><i className="fas fa-arrow-circle-left"></i> Back to courses</h4>
                         </Link>
                     </Row>
-                    <div dangerouslySetInnerHTML={{__html: marked(this.state.content)}} className = "topic-content"/>
+                    <div dangerouslySetInnerHTML={{__html: marked(this.props.currentTopic.content)}} className = "topic-content"/>
                 </BurgerMenu>
 
             </Container>
