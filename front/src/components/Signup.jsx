@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { signup } from '../actions/loginAction';
+import ModalInput from "./ModalInput";
 
 
 class Signup extends Component {
@@ -10,7 +11,8 @@ class Signup extends Component {
 
         this.state = {
             login: '',
-            password: ''
+            password: '',
+            modalShow: false
         }
 
         this.inputLogin = React.createRef();
@@ -25,45 +27,57 @@ class Signup extends Component {
     // }
 
     render() {
+
+        let modalClose = () => this.setState({ modalShow: false });
+
         return (
             <Container>
-                <Form onSubmit = {this.regit}>
-                    <Form.Group as={Row} controlId="formHorizontalUsername">
-                        <Form.Label column sm = {2} className="text-right">
-                            Username
-                        </Form.Label>
-                        <Col sm={8}>
-                            <Form.Control type="text" 
-                                          placeholder="Username" 
-                                          ref = {this.inputLogin}
-                                          onChange = {this.handleLogin}
-                            />
-                        </Col>
-                    </Form.Group>
+                <div 
+                    className = "signup"
+                    onClick = {() => this.setState({modalShow: true})}
+                    style={{cursor: 'pointer'}}    
+                >
+                    <span className="mr-3">Create New account?</span>
+                    <a id="create-account-btn"
+                         
+                        >
+                        Sign up
+                    </a>
+                </div>
+                <ModalInput 
+                    show={this.state.modalShow}
+                    onHide={modalClose}
+                    onSave = {this.regit}
+                    modalTitle = "Create account"
+                >   
+                    <Form onSubmit = {this.regit}>
+                        <Form.Group as={Row} controlId="formHorizontalUsername">
+                            <Form.Label column sm = {2} className="text-right">
+                                Username
+                            </Form.Label>
+                            <Col sm={8}>
+                                <Form.Control type="text" 
+                                            placeholder="Username" 
+                                            ref = {this.inputLogin}
+                                            onChange = {this.handleLogin}
+                                            />
+                            </Col>
+                        </Form.Group>
 
-                    <Form.Group as={Row} sm={{span:10, offset : 2}} controlId="formHorizontalPassword">
-                        <Form.Label column sm={2} className="text-right">
-                            Password
-                        </Form.Label>
-                        <Col sm={8}>
-                            <Form.Control type="password" 
-                                          placeholder="Password" 
-                                          ref = {this.inputPassword}
-                                          onChange = {this.handlePassword}
-                            />
-                        </Col>
-                    </Form.Group>
-                    
-                    <Form.Group as={Row}>
-                        <Col sm = {{span: 4, offset: 4}}>
-                            <Button type = "submit"
-                                    variant = "dark" 
-                                    block>
-                                Sign up
-                            </Button>
-                        </Col>
-                    </Form.Group>
-                </Form>
+                        <Form.Group as={Row} sm={{span:10, offset : 2}} controlId="formHorizontalPassword">
+                            <Form.Label column sm={2} className="text-right">
+                                Password
+                            </Form.Label>
+                            <Col sm={8}>
+                                <Form.Control type="password" 
+                                            placeholder="Password" 
+                                            ref = {this.inputPassword}
+                                            onChange = {this.handlePassword}
+                                            />
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </ModalInput> 
             </Container>
         )
     }
@@ -81,12 +95,10 @@ class Signup extends Component {
     }
 
     regit(e) {
-        e.preventDefault();
         this.inputLogin.current.value = '';
         this.inputPassword.current.value = '';
         this.props.signup(this.state.login, this.state.password);
-        this.checkIfSignuped();
-        // this.props.history.push("/test");
+        // this.checkIfSignuped();
     }
 
     checkIfSignuped(){

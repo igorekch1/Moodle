@@ -113,10 +113,17 @@ sequelize.sync();
 
 app.use (express.static('public'));
 app.use(bodyParser.json());
-app.use(cors());
-app.use(cookieSession({
+app.use(
+    cors({
+        origin: process.env.FRONT_HOST || "http://localhost:3000",
+        credentials: true
+    })
+);
+app.set("trust proxy", 1); // trust first proxy
+app.use(
+    cookieSession({
         name: 'session',
-        keys: 'TopSecret'
+        keys: ["key1", "key2"]
     })
 );
 

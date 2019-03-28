@@ -34,7 +34,7 @@ export default function(state = initialState, action) {
         if (action.payload.created) {
             return {
                 ...state,
-                loggedIn: true,
+                loggedIn: false,
                 errorOccured: false
             }
         } else {

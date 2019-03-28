@@ -3,6 +3,31 @@
     margin: 0;
 }
 
+.mainpage-header {
+    display: flex;
+    justify-content: space-between;
+    height: 70px;
+    line-height: 70px;
+    padding: 0 100px;
+    background-color: #18191b;
+    color: #fff;
+}
+
+#create-account-btn {
+    padding: 5px 10px;
+    border: 1px solid #21c0c0;
+    color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: 0;
+    transition: all .2s ease-in;
+}
+
+.signup:hover #create-account-btn {
+    background-color: #21c0c0;
+    color: #000000;
+}
+
 .header-wrapper {
     height: 70px;
 }
@@ -13,7 +38,7 @@
     top: 0;
     height: 70px;
     line-height: 70px;
-    padding: 0 30px;
+    padding: 0 60px;
     background-color: #000000;
     z-index: 999;
 }
@@ -58,18 +83,14 @@
 }
 
 /* MAIN PAGE START */
-.polymorph {
-    fill: #29ABE2;
-}
-
-.cta, .cta2 {
+.signin-btn {
 	position: absolute;
 	margin: 10em auto 0 auto;
 	left: 0;
 	right: 0;
-	width: 30%;
+	width: 20%;
 	background: none;
-	border: 1px solid #fff;
+	border: 1px solid #21c0c0;
 	border-radius: 5px;
 	padding: 15px;
 	color: #fff;
@@ -78,17 +99,21 @@
 	outline: 0;
 }
 
-.cta2 {
-	width: auto;
-	margin: 30px auto;
-	background: #29ABE2;
+.signin-close {
+    position: absolute;
+    top: 0px;
+    right: 100px;
+    cursor: pointer;
+	/* width: auto; */
+	/* margin: 30px auto; */
+	/* background: #24292e; */
 }
 
 .blip {
 	position: absolute;
-	color: #29ABE2;
+	color: #24292e;
 	right: 25%;
-	top: 0;
+	top: 50px;
 	opacity: 0;
 	width: 30%;
 	transform: translateY(-800px);

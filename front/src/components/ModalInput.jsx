@@ -27,7 +27,7 @@ class ModalInput extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.props.onHide}>Close</Button>
-                    <Button variant="primary" onClick={this.saveNexit}>Save</Button>
+                    <Button variant="primary" onClick={this.saveNexit}>Continue</Button>
                 </Modal.Footer>
             </Modal>
         );

@@ -14,12 +14,12 @@ class Header extends Component{
         return (
             <div className="header-wrapper">
             <Container fluid className="Header">
-                <Row className="justify-content-between">
-                    <Col xs="2" className="Header-greeting">Logotype mVzVhVkV</Col>
-                    <Col className="Header-greeting" xs="2">
+                <Row className="justify-content-between" noGutters>
+                    <Col xs="true" className="Header-greeting">Logotype mVzVhVkV</Col>
+                    <Col className="Header-greeting" xs="true">
                         Signed in as: {this.props.user}
                     </Col>
-                    <Col xs="2" className="Logout-btn">
+                    <Col xs="true" className="Logout-btn">
                         <Button variant="danger"
                                 onClick = {this.log_out}
                         >

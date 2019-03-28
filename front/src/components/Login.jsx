@@ -21,18 +21,18 @@ class Login extends Component {
     }
 
     componentDidUpdate() {
-        if (this.props.loggedIn) this.props.history.push("/determinant");
+        // if (this.props.loggedIn) this.props.history.push("/determinant");
     }
 
     render() {
         return (
             <Container>
+                <Row className="justify-content-center mb-4">
+                    <h1>Sign in</h1>
+                </Row>
                 <Form onSubmit = {this.login}>
                     <Form.Group as={Row} controlId="formHorizontalUsername">
-                        <Form.Label column sm = {2} className="text-right">
-                            Username
-                        </Form.Label>
-                        <Col sm={8}>
+                        <Col>
                             <Form.Control type="text" 
                                           placeholder="Username" 
                                           ref = {this.inputLogin}
@@ -41,11 +41,8 @@ class Login extends Component {
                         </Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} sm={{span:10, offset : 2}} controlId="formHorizontalPassword">
-                        <Form.Label column sm={2} className="text-right">
-                            Password
-                        </Form.Label>
-                        <Col sm={8}>
+                    <Form.Group as={Row} controlId="formHorizontalPassword">
+                        <Col>
                             <Form.Control type="password" 
                                           placeholder="Password" 
                                           ref = {this.inputPassword}
@@ -55,23 +52,16 @@ class Login extends Component {
                     </Form.Group>
                     
                     <Form.Group as={Row}>
-                        <Col sm = {{span: 4, offset: 4}}>
+                        <Col>
                             <Button type="submit" 
-                                    variant = "dark" 
+                                    variant = "dark"
                                     block
                             >
-                                Log in
+                                Continue
                             </Button>
                         </Col>
                     </Form.Group>
                 </Form>
-                
-                <Row>
-                    <Col sm = {{offset:4}}>
-                        <Link to="/signup" className="text-decoration-none text-reset">Create an account?</Link>
-                    </Col>
-                
-                </Row>
             </Container>
         )
     }
