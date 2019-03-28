@@ -3,7 +3,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Provider } from "react-redux";
 import createHistory from "history/createBrowserHistory";
 import store from "./store";
-// import MainPage from "./components/MainPage";
+import MainPage from "./components/MainPage";
 import Login from "./components/Login";
 import Signup from "./components/Signup"; 
 import AdminPage from './components/AdminPage';
@@ -18,8 +18,8 @@ class App extends Component {
         <Router history = {createHistory()}>
           <div>
             <Switch>
-              {/* <Route path = "/" component = {MainPage} exact/> */}
-              <Route path = "/" component = {Login} exact/>
+              <Route path = "/" component = {MainPage} exact/>
+              {/* <Route path = "/" component = {Login}/> */}
               <Route path = "/determinant" render={() => (
                 store.getState().login.userRole === "admin" ? (
                   <Redirect to="/admin"/>

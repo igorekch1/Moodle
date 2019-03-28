@@ -159,7 +159,7 @@ app.get('/topics/:courseId', async(req,res) => {
 });
 //----------------------------------------------------
 
-//------- Post a new Topic w/ checking if exists -------
+//------- Create or Modify a new Topic w/ checking if exists -------
 app.post('/topics/:courseId', async(req,res) => {
     console.log(req.params.courseId)
     let checkTopic = await Topic.findOne({
