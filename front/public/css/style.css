@@ -62,12 +62,20 @@
     padding: 40px 140px;
 }
 
-.Create-topic-link {
+.create-topic-link {
     cursor: pointer;
 }
 
-.Create-topic-link:hover {
-    color: #00ff00;
+.create-topic-link:hover .create-topic-link-text {
+    color: #00ff77;
+}
+
+.delete-course-btn {
+    cursor: pointer;
+}
+
+.delete-course-btn:hover .delete-course-text {
+    color: #ff3300;
 }
 
 .page-title {
@@ -83,6 +91,10 @@
 }
 
 /* MAIN PAGE START */
+.polygon {
+    fill: #24292e;
+}
+
 .signin-btn {
 	position: absolute;
 	margin: 10em auto 0 auto;
@@ -90,13 +102,13 @@
 	right: 0;
 	width: 20%;
 	background: none;
-	border: 1px solid #21c0c0;
+    border: 1px solid #21c0c0;
 	border-radius: 5px;
 	padding: 15px;
 	color: #fff;
 	font-size: 1.5em;
 	cursor: pointer;
-	outline: 0;
+    outline: 0;
 }
 
 .signin-close {

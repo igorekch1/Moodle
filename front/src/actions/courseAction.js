@@ -1,4 +1,9 @@
-import { FETCH_COURSES, CREATE_COURSE, RESET_CURRENT_COURSEID, SET_CURRENT_COURSE } from "./types";
+import { FETCH_COURSES, 
+            CREATE_COURSE, 
+            RESET_CURRENT_COURSEID, 
+            SET_CURRENT_COURSE, 
+            DELETE_COURSE 
+        } from "./types";
 
 export const set_current_courseId = (id) => dispatch => {
     dispatch({
@@ -41,6 +46,24 @@ export const create_course = (name, description) => dispatch => {
         dispatch({
             type: CREATE_COURSE,
             payload: course
+        })
+    })
+}
+
+export const delete_course = id => dispatch => {
+    fetch(`http://localhost:5000/courses/del`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+        body: JSON.stringify({id})
+    })
+    .then(res => res.json())
+    .then(data => {
+        dispatch({
+            type: DELETE_COURSE,
+            payload: data
         })
     })
 }

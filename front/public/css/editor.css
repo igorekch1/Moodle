@@ -10,12 +10,12 @@
   
   .editor-left {
     width: 47.5%;
-    height: 72vh;
+    height: 70vh;
   }
   
   .preview-right {
     width: 47.5%;
-    height: 72vh;
+    height: 70vh;
     border: 1px solid #999; 
     overflow: auto;
   }

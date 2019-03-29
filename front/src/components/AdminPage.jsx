@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetch_courses, create_course, reset_current_courseid, set_current_courseId } from "../actions/courseAction";
+import { fetch_courses, 
+            create_course, 
+            reset_current_courseid, 
+            set_current_courseId,
+            delete_course 
+        } from "../actions/courseAction";
 import { reset_current_topic } from "../actions/topicAction";
 import { Container, Row, Col, ButtonToolbar, Button, InputGroup, FormControl, CardColumns, Card } from "react-bootstrap";
 import ModalInput from "./ModalInput";
@@ -21,6 +26,7 @@ class AdminPage extends Component {
         this.goToTopicEditor = this.goToTopicEditor.bind(this);
         this.handleCourseName = this.handleCourseName.bind(this);
         this.handleCourseDescription = this.handleCourseDescription.bind(this);
+        this.deleteCourse = this.deleteCourse.bind(this);
     }
 
     componentDidMount() {
@@ -99,12 +105,22 @@ class AdminPage extends Component {
                                     <Card.Title>
                                         {/* getting topics by course id */}
                                         <Topic idCourse = {course.id}/>
-                                        <div className="mt-3">
-                                            <i className="fa fa-plus" aria-hidden="true" style={{color:'#00ff00', marginRight: '5px'}}></i> 
-                                            <span className="Create-topic-link"
-                                                data-id = {course.id}
-                                                onClick={this.goToTopicEditor}   
-                                            >   Create new topic
+                                        <div className="mt-3 create-topic-link">
+                                            <i className="fa fa-plus" aria-hidden="true" style={{color:'#00ff77', marginRight: '10px'}}></i> 
+                                            <span className="create-topic-link-text"
+                                                  data-id = {course.id}
+                                                  onClick={this.goToTopicEditor}   
+                                            >
+                                                Create new topic
+                                            </span>
+                                        </div>
+                                        <div className="mt-3 delete-course-btn">
+                                            <i className="fa fa-times" aria-hidden="true" style={{color:'#ff3300', marginRight: '10px'}}></i>
+                                            <span className="delete-course-text"
+                                                  data-id = {course.id}
+                                                  onClick={this.deleteCourse}
+                                            >
+                                                Delete this course
                                             </span>
                                         </div>
                                             
@@ -145,6 +161,11 @@ class AdminPage extends Component {
         // this.props.reset_current_courseid();
         this.props.history.push("/editor");
     }
+
+    deleteCourse(e) {
+        let course_id = e.target.getAttribute("data-id");
+        this.props.delete_course(course_id);
+    }
 }
 
 AdminPage.defaultProps = {
@@ -160,4 +181,11 @@ const mapStateToProps = state => ({
     userName: state.login.userName
 })
 
-export default connect(mapStateToProps, { fetch_courses, create_course, reset_current_topic, reset_current_courseid, set_current_courseId })(AdminPage);
+export default connect(mapStateToProps, { 
+    fetch_courses, 
+    create_course, 
+    reset_current_topic, 
+    reset_current_courseid, 
+    set_current_courseId, 
+    delete_course 
+})(AdminPage);

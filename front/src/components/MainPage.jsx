@@ -57,8 +57,9 @@ class MainPage extends Component {
                         >
                             <polygon fill="#24292e" points="215,95.8 0,95.8 0,0 47.7,0 215,0 " />
                         </Anime>
+                        // : <div/>
                         :
-                        <polygon fill="#24292e" points="215,95.8 0,95.8 0,0 46.216,0 215,0 " />
+                        <polygon className="polygon" points="215,95.8 0,95.8 0,0 46.216,0 215,0 " />
                     }
                 </svg>
 

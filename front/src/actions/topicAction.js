@@ -55,10 +55,10 @@ export const delete_topic = id => dispatch => {
         body: JSON.stringify({id})
     })
     .then(res => res.json())
-    .then(topic => {
+    .then(data => {
         dispatch({
             type: DELETE_TOPIC,
-            payload: topic
+            payload: data
         })
     })
 }

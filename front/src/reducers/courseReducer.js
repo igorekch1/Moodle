@@ -1,4 +1,9 @@
-import { FETCH_COURSES, CREATE_COURSE, RESET_CURRENT_COURSEID, SET_CURRENT_COURSE } from "../actions/types";
+import { FETCH_COURSES, 
+            CREATE_COURSE, 
+            RESET_CURRENT_COURSEID, 
+            SET_CURRENT_COURSE, 
+            DELETE_COURSE 
+        } from "../actions/types";
 
 const initialState = {
     allCourses: [],
@@ -30,6 +35,15 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 courseId: null
+            }
+        
+        case DELETE_COURSE:
+            if (action.payload.removed) {
+                return {
+                    ...state,
+                    courseItem: {},
+                    courseId: null
+                }
             }
 
         default:

@@ -90,7 +90,9 @@ const Answer = sequelize.define('answer', {
 User.belongsToMany(Course,{through: "user_course"});
 Course.belongsToMany(User,{through: "user_course"});
 
-Course.hasMany(Topic);
+Course.hasMany(Topic, {
+    onDelete: 'cascade'
+});
 Topic.belongsTo(Course);
 
 Topic.hasMany(Test);
@@ -155,6 +157,17 @@ app.get('/courses', async(req,res) => {
     res.end(JSON.stringify(courses));
 });
 //-------------------------------
+
+//-------------------- Delete course ---------------------
+app.delete('/courses/del', async (req,res) => {
+    let removedCourse = await Course.destroy({
+        where : {
+            id: req.body.id
+        }
+    })
+    res.status(200).end(JSON.stringify({removed: true}))
+})
+//-------------------------------------------------------
 
 //------- GET ALL TOPICS FROM CONCRETE COURSES -------
 app.get('/topics/:courseId', async(req,res) => {
