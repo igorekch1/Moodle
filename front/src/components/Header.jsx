@@ -15,7 +15,7 @@ class Header extends Component{
             <div className="header-wrapper">
             <Container fluid className="Header">
                 <Row className="justify-content-between" noGutters>
-                    <Col xs="true" className="Header-greeting">Logotype mVzVhVkV</Col>
+                    <Col xs="true" className="Header-greeting">Logotype</Col>
                     <Col className="Header-greeting" xs="true">
                         Signed in as: {this.props.user}
                     </Col>

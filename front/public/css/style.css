@@ -62,6 +62,16 @@
     padding: 40px 140px;
 }
 
+.fa-edit {
+    font-size: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.fa-edit:hover {
+    color: #23f8d5;
+}
+
 .create-topic-link {
     cursor: pointer;
 }
@@ -114,6 +124,7 @@
 .signin-close {
     position: absolute;
     top: 0px;
+    color: #18191b;
     right: 100px;
     cursor: pointer;
 	/* width: auto; */

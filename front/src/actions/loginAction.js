@@ -4,7 +4,8 @@ export const login = (login, password) => dispatch => {
     fetch("http://localhost:5000/login", {
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'credentials': 'same-origin'
         },
         method: "POST",
         body: JSON.stringify({

@@ -91,4 +91,4 @@ const mapStateToProp = state => ({
     loggedIn: state.login.loggedIn
 })
 
-export default connect(mapStateToProp, {  })(MainPage);
+export default connect(mapStateToProp, {})(MainPage);

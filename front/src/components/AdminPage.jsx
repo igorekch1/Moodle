@@ -27,6 +27,7 @@ class AdminPage extends Component {
         this.handleCourseName = this.handleCourseName.bind(this);
         this.handleCourseDescription = this.handleCourseDescription.bind(this);
         this.deleteCourse = this.deleteCourse.bind(this);
+        this.editCourseName = this.editCourseName.bind(this);
     }
 
     componentDidMount() {
@@ -50,9 +51,10 @@ class AdminPage extends Component {
 
         return (
             <Container fluid className="Container">  
+
                 <Header user = {this.props.userName}/>
      
-                <Row className="justify-content-md-center">
+                <Row className="justify-content-md-center" noGutters>
                     <Col xs="2">
                         <ButtonToolbar>
                             <Button variant="outline-dark"
@@ -97,7 +99,15 @@ class AdminPage extends Component {
                     { this.props.courses.map((course) => {
                         return <Card key={course.id} bg="dark" text="white" className="Topic-card-item">
                                     <Card.Img variant="top" src="./assets/js.png" alt="Card image"/>
-                                    <Card.Header><h3>{course.name}</h3></Card.Header>
+                                    <Card.Header className = "d-flex justify-content-between">
+                                        <h3>{course.name}</h3>
+                                        <div>
+                                            <i className="fas fa-edit"
+                                               data-name = {course.name}    
+                                               onClick = {this.editCourseName}
+                                            ></i>
+                                        </div>
+                                    </Card.Header>
                                     <Card.Body>
                                     <Card.Text style={{color:"#e9e9e9"}}>
                                         {course.description}
@@ -165,6 +175,11 @@ class AdminPage extends Component {
     deleteCourse(e) {
         let course_id = e.target.getAttribute("data-id");
         this.props.delete_course(course_id);
+    }
+
+    editCourseName(e) {
+        console.log(e.target)
+        console.log(e.target.getAttribute("data-name"))
     }
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { bubble as Menu } from 'react-burger-menu';
+import { slide as Menu } from 'react-burger-menu';
 import { set_current_topic } from "../actions/topicAction";
 
 class BurgerMenu extends Component {
@@ -11,7 +11,7 @@ class BurgerMenu extends Component {
     }
 
     componentDidMount() {
-        console.log()
+        // console.log()
     }
 
     render() {
@@ -42,7 +42,7 @@ class BurgerMenu extends Component {
     showTopic(e) {
         let current_topic = e.target.getAttribute("data-id")
         this.props.set_current_topic(JSON.parse(current_topic));
-        console.log(this.props.currentTopic)
+        // console.log(this.props.currentTopic)
     }
 }
 

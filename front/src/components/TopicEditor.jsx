@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetch_topics, create_topic, delete_topic } from "../actions/topicAction";
 import { Link } from 'react-router-dom';
 import {Container, Button, Row, Col, Form} from "react-bootstrap";
+import { timingSafeEqual } from 'crypto';
 
 const initialMarkdown = `
 
@@ -72,7 +73,8 @@ class TopicEditor extends Component {
 
     componentDidMount() {
         this.setState({
-            markdown: `${this.props.currentTopic ? this.props.currentTopic.content: ''}`
+            markdown: `${this.props.currentTopic ? this.props.currentTopic.content: ''}`,
+            topicName: this.props.currentTopic ? this.props.currentTopic.name : ''
         })
     }
 
@@ -103,7 +105,7 @@ class TopicEditor extends Component {
                         <Col sm="5" style={{marginLeft:"-24px"}}>
                             <Form.Control type="text" 
                                             placeholder="Enter here..."
-                                            value = {this.props.currentTopic ? this.props.currentTopic.name: this.state.topicName} 
+                                            value = {this.state.topicName} 
                                             onChange = {this.handleTopic}              
                             />
                         </Col>
@@ -153,7 +155,8 @@ class TopicEditor extends Component {
 
     sendEditText(e) {
         e.preventDefault();
-        this.props.create_topic(this.state.topicName, this.state.markdown, this.props.courseId);
+        console.log(this.props.currentTopic)
+        this.props.create_topic(this.state.topicName, this.state.markdown, this.props.courseId, this.props.currentTopic);
     }
 }
 

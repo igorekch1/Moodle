@@ -118,7 +118,7 @@ app.use(bodyParser.json());
 app.use(
     cors({
         origin: process.env.FRONT_HOST || "http://localhost:3000",
-        credentials: true
+        credentials: 'include'
     })
 );
 app.set("trust proxy", 1); // trust first proxy
@@ -181,14 +181,9 @@ app.get('/topics/:courseId', async(req,res) => {
 
 //------- Create or Modify a new Topic w/ checking if exists -------
 app.post('/topics/:courseId', async(req,res) => {
-    console.log(req.params.courseId)
-    let checkTopic = await Topic.findOne({
-        where : {
-            name : req.body.name
-        }
-    })
-
-    if (!checkTopic) {
+    let toCreate = req.body.createOrUpdate == null;
+    
+    if (toCreate) {
         let newTopic = await Topic.create({
             name : req.body.name,
             content : req.body.content,
@@ -197,10 +192,21 @@ app.post('/topics/:courseId', async(req,res) => {
         res.status(201);
         res.end(JSON.stringify(newTopic));
     } else {
-        res.status(409);
-        res.end(JSON.stringify(newTopic));
-        throw new Error("Topic already exists");
-    }
+        let foundTopic = await Topic.findOne({
+            where : {
+                id : req.body.createOrUpdate.id
+            }
+        })
+        let updateTopic = await Topic.update({
+            name: req.body.name,
+            content: req.body.content
+        }, { 
+            where : {id : foundTopic.id} 
+        })
+
+        res.status(200);
+        res.end(JSON.stringify(foundTopic));
+    }   
 });
 //-------------------------------------------------------
 
@@ -225,14 +231,17 @@ app.post('/login', async(req,res) => {
     })
     if (checkUser) {
         checkUser = JSON.parse(JSON.stringify(checkUser));
-        console.log("checkUser - ",JSON.stringify(checkUser))
-        delete req.password;
-        req.session.auth = checkUser;
-        req.session.auth.loggedIn = true;
-        res.write(JSON.stringify(req.session.auth))
-        res.status(200);
-        console.log("session auth - ",req.session.auth);
-        res.end();  
+        // console.log("checkUser - ",JSON.stringify(checkUser))
+        // delete req.password;
+        // req.session.auth = checkUser;
+        // req.session.loggedIn = true;
+        // res.write(JSON.stringify(req.session.auth))
+        console.log(JSON.stringify(req.session));
+        // res.status(200).json(req.session);
+        // console.log("session auth - ",req.session);
+        checkUser.loggedIn = true;
+        console.log("checkuser - ",JSON.stringify(checkUser))
+        res.status(200).end(JSON.stringify(checkUser));  
     } else {
         res.status(409);
         res.end();

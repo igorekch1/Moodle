@@ -12,6 +12,7 @@ export default function(state = initialState, action) {
     switch(action.type) {
 
         case LOGIN :
+        console.log(action.payload)
         if (action.payload.loggedIn) {
             return {
                 ...state,

@@ -24,7 +24,7 @@ export const fetch_topics = (id) => dispatch => {
     })
 }
 
-export const create_topic = (name, content, id) => dispatch => {
+export const create_topic = (name, content, id, currentTopic) => dispatch => {
     fetch(`http://localhost:5000/topics/${id}`, {
         headers: {
             'Accept': 'application/json',
@@ -33,7 +33,8 @@ export const create_topic = (name, content, id) => dispatch => {
         method: "POST",
         body: JSON.stringify({
             name,
-            content
+            content,
+            createOrUpdate : currentTopic
         })
     })
     .then(res => res.json())
