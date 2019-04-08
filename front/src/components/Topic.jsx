@@ -12,8 +12,9 @@ class Topic extends Component {
     }
 
     componentDidMount() {
-        this.props.fetch_topics(this.props.idCourse);
         // this.intervalIdTopic = setInterval(this.props.fetch_topics.bind(this, this.props.idCourse), 3000);
+        this.props.fetch_topics(this.props.idCourse);
+        // console.log(this.props.topics)
     }
 
     componentWillUnmount() {

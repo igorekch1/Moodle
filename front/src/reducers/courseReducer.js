@@ -1,14 +1,18 @@
 import { FETCH_COURSES, 
             CREATE_COURSE, 
+            UPDATE_COURSE,
             RESET_CURRENT_COURSEID, 
-            SET_CURRENT_COURSE, 
-            DELETE_COURSE 
+            SET_CURRENT_COURSEID, 
+            DELETE_COURSE,
+            SET_CURRENT_COURSE,
+            RESET_CURRENT_COURSE 
         } from "../actions/types";
 
 const initialState = {
     allCourses: [],
     courseItem: {},
-    courseId: null
+    currentCourse: {},
+    courseId: null,
 }
 
 export default function(state = initialState, action) {
@@ -24,8 +28,21 @@ export default function(state = initialState, action) {
                 ...state,
                 courseItem: action.payload
             }
+
+        case UPDATE_COURSE:
+        console.log(action.payload)
+        state.allCourses.map(course => {
+            if (course.id === action.payload.id) {
+                console.log(course)
+                course.name = action.payload.name;
+                course.description = action.payload.description
+            }
+        })
+            return {
+                ...state
+            }   
             
-        case SET_CURRENT_COURSE:
+        case SET_CURRENT_COURSEID:
             return {
                 ...state,
                 courseId: action.payload.id
@@ -36,11 +53,25 @@ export default function(state = initialState, action) {
                 ...state,
                 courseId: null
             }
+
+        case SET_CURRENT_COURSE:
+            return {
+                ...state,
+                currentCourse: action.payload
+            }
         
+        case RESET_CURRENT_COURSE:
+            return {
+                ...state,
+                currentCourse: {}
+            }
+
+
         case DELETE_COURSE:
             if (action.payload.removed) {
+                state.allCourses = state.allCourses.filter(({id}) => id != action.payload.id)
                 return {
-                    ...state,
+                    ...state,   
                     courseItem: {},
                     courseId: null
                 }

@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { fetch_courses, 
             create_course, 
+            update_course,
             reset_current_courseid, 
             set_current_courseId,
-            delete_course 
+            delete_course,
+            set_current_course,
+            reset_current_course
         } from "../actions/courseAction";
 import { reset_current_topic } from "../actions/topicAction";
-import { Container, Row, Col, ButtonToolbar, Button, InputGroup, FormControl, CardColumns, Card } from "react-bootstrap";
+import { Container, Row, Col, ButtonToolbar, Button, InputGroup, Form, FormControl, CardColumns, Card } from "react-bootstrap";
 import ModalInput from "./ModalInput";
 import Header from "./Header";
 import Topic from "./Topic";
@@ -22,25 +25,30 @@ class AdminPage extends Component {
             course_description: ''
         };
 
+        this.inputName = React.createRef();
+        this.inputDescription = React.createRef();
+
         this.createNewCourse = this.createNewCourse.bind(this);
         this.goToTopicEditor = this.goToTopicEditor.bind(this);
         this.handleCourseName = this.handleCourseName.bind(this);
         this.handleCourseDescription = this.handleCourseDescription.bind(this);
-        this.deleteCourse = this.deleteCourse.bind(this);
         this.editCourseName = this.editCourseName.bind(this);
+        this.editDescription = this.editDescription.bind(this);
     }
 
     componentDidMount() {
         this.props.fetch_courses();
         // this.intervalIdCourse = setInterval(this.props.fetch_courses, 3000);
     }
-
+    
     componentWillUnmount() {
         clearInterval(this.intervalIdCourse);
     }
-
+    
     componentWillReceiveProps(nextProps) {
-        if (nextProps.newCourse) {
+        console.log(nextProps.currentCourse)
+        // if (nextProps.currentCourse) return;
+        if (Object.entries(nextProps.newCourse).length !== 0) {
             this.props.courses.unshift(nextProps.newCourse);
         }
     }
@@ -59,7 +67,11 @@ class AdminPage extends Component {
                         <ButtonToolbar>
                             <Button variant="outline-dark"
                                     className="Btn-create-topic"
-                                    onClick = {() => this.setState({modalShow: true})}        
+                                    onClick = {() => {
+                                            this.setState({modalShow: true});
+                                            this.props.reset_current_course()
+                                        }
+                                    }        
                             >
                                 Create new course
                             </Button>
@@ -67,15 +79,17 @@ class AdminPage extends Component {
                                 show={this.state.modalShow}
                                 onHide={modalClose}
                                 onSave = {this.createNewCourse}
-                                modalTitle = "New course"
+                                modalTitle = {Object.entries(this.props.currentCourse).length !== 0 ? "Edit course" : "New course"} 
                             >   
                                 <InputGroup className="mb-3">
                                     <InputGroup.Prepend>
                                         <InputGroup.Text><i className="fab fa-leanpub"></i></InputGroup.Text>
                                     </InputGroup.Prepend>
-                                    <FormControl
-                                        placeholder="Enter name..."
-                                        aria-describedby="course-icon"
+                                    <Form.Control
+                                        aria-describedby = "course-icon"
+                                        value = {this.state.course_name}
+                                        placeholder = "Enter name..."
+                                        ref = {this.inputName}
                                         onChange = {this.handleCourseName}
                                     />
                                 </InputGroup>
@@ -83,10 +97,12 @@ class AdminPage extends Component {
                                     <InputGroup.Prepend>
                                         <InputGroup.Text><i className="fas fa-info"></i></InputGroup.Text>
                                     </InputGroup.Prepend>
-                                    <FormControl
+                                    <Form.Control
                                         as="textarea"
                                         aria-label="With textarea"
+                                        value = {this.state.course_description}
                                         placeholder="Enter description..."
+                                        ref = {this.inputDescription}
                                         onChange = {this.handleCourseDescription}
                                     />
                                 </InputGroup>
@@ -100,41 +116,65 @@ class AdminPage extends Component {
                         return <Card key={course.id} bg="dark" text="white" className="Topic-card-item">
                                     <Card.Img variant="top" src="./assets/js.png" alt="Card image"/>
                                     <Card.Header className = "d-flex justify-content-between">
-                                        <h3>{course.name}</h3>
-                                        <div>
-                                            <i className="fas fa-edit"
-                                               data-name = {course.name}    
-                                               onClick = {this.editCourseName}
-                                            ></i>
-                                        </div>
+                                    <InputGroup>
+                                        <FormControl
+                                            aria-label="Course name"
+                                            aria-describedby="basic-addon2"
+                                            placeholder = {course.name}
+                                            onChange = {this.handleCourseName}
+                                        />
+                                        <InputGroup.Append>
+                                            <Button 
+                                                variant="outline-light"
+                                                data-course = {JSON.stringify(course)}    
+                                                onClick = {this.editCourseName}     
+                                            > Edit 
+                                            </Button>
+                                        </InputGroup.Append>
+                                    </InputGroup>
                                     </Card.Header>
                                     <Card.Body>
-                                    <Card.Text style={{color:"#e9e9e9"}}>
-                                        {course.description}
-                                    </Card.Text>
-                                    <Card.Title>
-                                        {/* getting topics by course id */}
-                                        <Topic idCourse = {course.id}/>
-                                        <div className="mt-3 create-topic-link">
-                                            <i className="fa fa-plus" aria-hidden="true" style={{color:'#00ff77', marginRight: '10px'}}></i> 
-                                            <span className="create-topic-link-text"
-                                                  data-id = {course.id}
-                                                  onClick={this.goToTopicEditor}   
-                                            >
-                                                Create new topic
-                                            </span>
-                                        </div>
-                                        <div className="mt-3 delete-course-btn">
-                                            <i className="fa fa-times" aria-hidden="true" style={{color:'#ff3300', marginRight: '10px'}}></i>
-                                            <span className="delete-course-text"
-                                                  data-id = {course.id}
-                                                  onClick={this.deleteCourse}
-                                            >
-                                                Delete this course
-                                            </span>
-                                        </div>
-                                            
-                                    </Card.Title>
+                                        <Card.Text style={{color:"#e9e9e9"}}>
+                                            <InputGroup>
+                                                <FormControl as="textarea" 
+                                                            aria-label="With textarea"
+                                                            placeholder = {course.description} 
+                                                            onChange = {this.handleCourseDescription}
+                                                />
+                                                <InputGroup.Append>
+                                                    <InputGroup.Text>
+                                                        <Button 
+                                                            variant="outline-dark"
+                                                            data-course = {JSON.stringify(course)}
+                                                            onClick = {this.editDescription}
+                                                        > Edit
+                                                        </Button>
+                                                    </InputGroup.Text>
+                                                </InputGroup.Append>
+                                            </InputGroup>
+                                        </Card.Text>
+                                        <Card.Title>
+                                            {/* getting topics by course id */}
+                                            <Topic idCourse = {course.id}/>
+                                            <div className="mt-3 create-topic-link">
+                                                <i className="fa fa-plus" aria-hidden="true" style={{color:'#00ff77', marginRight: '10px'}}></i> 
+                                                <span className="create-topic-link-text"
+                                                    data-id = {course.id}
+                                                    onClick={this.goToTopicEditor}   
+                                                >
+                                                    Create new topic
+                                                </span>
+                                            </div>
+                                            <div className="mt-3 delete-course-btn">
+                                                <i className="fa fa-times" aria-hidden="true" style={{color:'#ff3300', marginRight: '10px'}}></i>
+                                                <span className="delete-course-text"
+                                                    onClick={() => this.props.delete_course(course.id)}
+                                                >
+                                                    Delete this course
+                                                </span>
+                                            </div>
+                                                
+                                        </Card.Title>
                                     </Card.Body>
                                     <Card.Footer>
                                         <small className="text-muted">Last updated {Math.round((new Date() - Date.parse(course.updatedAt))/(1000*60)%60)} mins ago.</small>
@@ -163,23 +203,33 @@ class AdminPage extends Component {
         this.props.create_course(this.state.course_name, this.state.course_description);
     }
 
-    // reset current topic when link on creating new topic
     goToTopicEditor(e){
         let course_id = e.target.getAttribute("data-id");
         this.props.set_current_courseId(course_id);
         this.props.reset_current_topic();
-        // this.props.reset_current_courseid();
         this.props.history.push("/editor");
     }
 
-    deleteCourse(e) {
-        let course_id = e.target.getAttribute("data-id");
-        this.props.delete_course(course_id);
+    editCourseName(e) {
+        e.preventDefault();
+        let currentCourse = JSON.parse(e.target.getAttribute("data-course"));
+        let course = {
+            id: currentCourse.id,
+            name: this.state.course_name,
+            description: ''
+        }
+        this.props.update_course(course);
     }
 
-    editCourseName(e) {
-        console.log(e.target)
-        console.log(e.target.getAttribute("data-name"))
+    editDescription(e) {
+        e.preventDefault();
+        let currentCourse = JSON.parse(e.target.getAttribute("data-course"));
+        let course = {
+            id: currentCourse.id,
+            name: '',
+            description: this.state.course_description
+        }
+        this.props.update_course(course);
     }
 }
 
@@ -189,12 +239,14 @@ AdminPage.defaultProps = {
 
 const mapStateToProps = state => ({
     courses: state.course.allCourses,
+    courseItem: state.course.courseItem,
     newCourse: state.course.courseItem,
     courseId: state.course.courseId,
+    currentCourse: state.course.currentCourse,
     currentTopic: state.topic.currentTopic,
     userId: state.login.userId,
     userName: state.login.userName
-})
+});
 
 export default connect(mapStateToProps, { 
     fetch_courses, 
@@ -202,5 +254,8 @@ export default connect(mapStateToProps, {
     reset_current_topic, 
     reset_current_courseid, 
     set_current_courseId, 
-    delete_course 
+    delete_course,
+    set_current_course,
+    reset_current_course,
+    update_course
 })(AdminPage);

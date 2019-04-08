@@ -39,6 +39,7 @@ export default function(state = initialState, action) {
 
         case DELETE_TOPIC:
         if (action.payload.removed) {
+            state.allTopics = state.allTopics.filter(({id}) => id != action.payload.id)
             return {
                 ...state,
                 currentTopic: null

@@ -5,7 +5,7 @@ export const login = (login, password) => dispatch => {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'credentials': 'same-origin'
+            credentials: 'include'
         },
         method: "POST",
         body: JSON.stringify({

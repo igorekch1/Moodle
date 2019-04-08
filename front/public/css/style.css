@@ -141,4 +141,8 @@
 	width: 30%;
 	transform: translateY(-800px);
 }
+
+.bm-item.menu-item {
+    padding: 4px 0 4px 10px;
+}
 /* MAIN PAGE END */

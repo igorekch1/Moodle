@@ -2,9 +2,11 @@
   "name": "front",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "highlight.js": "^9.15.6",
+    "http-proxy-middleware": "^0.19.1",
     "marked": "^0.6.1",
     "react": "^16.7.0",
     "react-anime": "^2.2.0",

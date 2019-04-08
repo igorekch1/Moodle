@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const cookieSession = require('cookie-session');
+// const cookieSession = require('cookie-session');
 const Sequelize = require('sequelize');
+var session = require('express-session');
 const port = process.env.PORT || 5000;
 
 const sequelize = new Sequelize('moodle', 'root', 'Kingkongloxlox123',  {
@@ -72,17 +73,18 @@ const Topic = sequelize.define('topics', {
     courseId: Sequelize.INTEGER
 });
 
-const Test = sequelize.define('test', {
-    name: Sequelize.STRING
+const Test = sequelize.define('tests', {
+    name: Sequelize.STRING,
+    time: Sequelize.INTEGER
 });
 
-const Question = sequelize.define('question', {
+const Question = sequelize.define('questions', {
     testId: Sequelize.INTEGER,
     name: Sequelize.STRING,
     type : Sequelize.ENUM("CHECKBOX","RADIOBUTTON")
 });
 
-const Answer = sequelize.define('answer', {
+const Answer = sequelize.define('answers', {
     testId: Sequelize.INTEGER,
     name: Sequelize.STRING // then split + join (checkboxes)
 });
@@ -121,22 +123,35 @@ app.use(
         credentials: 'include'
     })
 );
+// app.use(
+    //     cookieSession({
+        //         name: 'session',
+        //         keys: ["key1", "key2"]
+        //     })
+        // );
+        
 app.set("trust proxy", 1); // trust first proxy
+// session
 app.use(
-    cookieSession({
-        name: 'session',
-        keys: ["key1", "key2"]
+    session({ 
+        secret: "topSecret", 
+        cookie: { 
+            maxAge: 60000, 
+            secure: false,
+            httpOnly: false
+        }
     })
 );
 
 //------- Post a new Course w/ checking if exists -------
 app.post('/courses', async(req,res) => {
-    let checkCourse = await Course.findOne({
+    let foundCourse = await Course.findOne({
         where : {
             name : req.body.name
         }
     })
-    if (!checkCourse) {
+    
+    if (!foundCourse) {
         let newCourse = await Course.create({
             name : req.body.name,
             description: req.body.description
@@ -144,11 +159,37 @@ app.post('/courses', async(req,res) => {
         res.status(201);
         res.end(JSON.stringify(newCourse));
     } else {
-        res.status(409);
-        res.end(JSON.stringify(newCourse));
-        throw new Error("Course already exists");
+        res.status(409).json({error: 'alreadyExists'})
     }
 });
+
+//------- UPDATE COURSE ---------
+app.put('/courses/update', async(req,res) => {
+    console.log(req.body)
+    
+    if (req.body.name) {
+        let updatedCourse = await Course.update({
+            name: req.body.name
+        }, { 
+            where : {id : req.body.id} 
+        })
+    } else {
+        let updatedCourse = await Course.update({
+            description: req.body.description
+        }, { 
+            where : {id : req.body.id} 
+        })
+    }
+    
+    let foundCourse = await Course.findOne({
+        where : {
+            id : req.body.id
+        }
+    })
+
+    res.status(200);
+    res.end(JSON.stringify(foundCourse));
+})
 
 //------- GET ALL COURSES -------
 app.get('/courses', async(req,res) => {
@@ -160,18 +201,19 @@ app.get('/courses', async(req,res) => {
 
 //-------------------- Delete course ---------------------
 app.delete('/courses/del', async (req,res) => {
+    let removedId = req.body.id;
+
     let removedCourse = await Course.destroy({
         where : {
             id: req.body.id
         }
     })
-    res.status(200).end(JSON.stringify({removed: true}))
+    res.status(200).end(JSON.stringify({removed: true, id: removedId}))
 })
 //-------------------------------------------------------
 
 //------- GET ALL TOPICS FROM CONCRETE COURSES -------
 app.get('/topics/:courseId', async(req,res) => {
-    console.log(req.params.courseId)
     let courseId = await Course.findByPk(req.params.courseId);
     let topics = await courseId.getTopics();
     res.status(200);
@@ -197,7 +239,7 @@ app.post('/topics/:courseId', async(req,res) => {
                 id : req.body.createOrUpdate.id
             }
         })
-        let updateTopic = await Topic.update({
+        let updatedTopic = await Topic.update({
             name: req.body.name,
             content: req.body.content
         }, { 
@@ -212,12 +254,88 @@ app.post('/topics/:courseId', async(req,res) => {
 
 //-------------------- Delete topic ---------------------
 app.delete('/topics/del', async (req,res) => {
+    let removedId = req.body.id;
+
     let removedTopic = await Topic.destroy({
         where : {
             id: req.body.id
         }
     })
-    res.status(200).end(JSON.stringify({removed: true}))
+    res.status(200).end(JSON.stringify({removed: true, id: removedId}))
+})
+//-------------------------------------------------------
+
+//------- GET ALL TESTS FROM CONCRETE TOPIC -------
+app.get('/tests/:topicId', async(req,res) => {
+    let topicId = await Topic.findByPk(req.params.topicId);
+    let tests = await topicId.getTests();
+    
+    res.status(200);
+    res.end(JSON.stringify(tests)); 
+});
+//----------------------------------------------------
+
+//------- Create new Test -------
+app.post('/tests/:topicId', async(req,res) => {
+
+    let foundTest = await Test.findOne({
+        where : {
+            name : req.body.name
+        }
+    });
+
+    if(!foundTest){   
+        let newTest = await Test.create({
+            name : req.body.name,
+            time : req.body.time,
+            topicId : req.params.topicId
+        });
+        res.status(201);
+        res.end(JSON.stringify(newTest));
+    } else {
+        res.status(409).json({error: 'alreadyExists'});
+    }
+});
+//-------------------------------------------------------
+
+//------- UPDATE TEST ---------
+app.put('/test/update', async(req,res) => {
+    console.log(req.body)
+    
+    if (req.body.name) {
+        let updatedTest = await Test.update({
+            name: req.body.name
+        }, { 
+            where : {id : req.body.id} 
+        })
+    } else {
+        let updatedTest = await Test.update({
+            time: req.body.time
+        }, { 
+            where : {id : req.body.id} 
+        })
+    }
+    
+    let foundTest = await Test.findOne({
+        where : {
+            id : req.body.id
+        }
+    })
+
+    res.status(200);
+    res.end(JSON.stringify(foundTest));
+})
+
+//-------------------- Delete test ---------------------
+app.delete('/tests/del', async (req,res) => {
+    let removedId = req.body.id;
+
+    let removedTest = await Test.destroy({
+        where : {
+            id: req.body.id
+        }
+    })
+    res.status(200).end(JSON.stringify({removed: true, id: removedId}))
 })
 //-------------------------------------------------------
 
@@ -231,22 +349,21 @@ app.post('/login', async(req,res) => {
     })
     if (checkUser) {
         checkUser = JSON.parse(JSON.stringify(checkUser));
-        // console.log("checkUser - ",JSON.stringify(checkUser))
-        // delete req.password;
-        // req.session.auth = checkUser;
-        // req.session.loggedIn = true;
-        // res.write(JSON.stringify(req.session.auth))
-        console.log(JSON.stringify(req.session));
-        // res.status(200).json(req.session);
-        // console.log("session auth - ",req.session);
-        checkUser.loggedIn = true;
-        console.log("checkuser - ",JSON.stringify(checkUser))
-        res.status(200).end(JSON.stringify(checkUser));  
+        req.session.auth = checkUser;
+        req.session.auth.loggedIn = true;
+        delete req.session.auth.password;
+        console.dir(JSON.stringify(req.session.auth));
+        res.status(200).end(JSON.stringify(req.session.auth));  
     } else {
         res.status(409);
         res.end();
     }
 });
+
+app.get('/test', async (req,res) => {
+    console.dir(JSON.stringify(req.session));
+    res.status(200).json(req.session.auth);
+})
 //--------------------------------------------------------------------
 
 //---------------- SIGNUP ------------------

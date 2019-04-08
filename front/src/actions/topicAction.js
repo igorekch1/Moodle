@@ -13,7 +13,7 @@ export const set_current_topic = (topic) => dispatch => {
     })
 }
 
-export const fetch_topics = (id) => dispatch => {
+export const fetch_topics = (id) => async dispatch => {
     fetch(`http://localhost:5000/topics/${id}`)
     .then(res => res.json())
     .then(topics => {

@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { fetch_topics, create_topic, delete_topic } from "../actions/topicAction";
+import { create_test } from "../actions/testAction";
 import { Link } from 'react-router-dom';
-import {Container, Button, Row, Col, Form} from "react-bootstrap";
-import { timingSafeEqual } from 'crypto';
+import {Container, Button, Row, Col, Form, ButtonToolbar, InputGroup} from "react-bootstrap";
+import ModalInput from "./ModalInput";
 
 const initialMarkdown = `
 
@@ -63,12 +64,16 @@ class TopicEditor extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            modalShow: false,
             markdown: '',
-            topicName: ''
+            topicName: '',
+            testName: '',
+            testTime: null
         }
 
         this.sendEditText = this.sendEditText.bind(this);
         this.deleteCurTopic = this.deleteCurTopic.bind(this);
+        this.createTest = this.createTest.bind(this);
     }
 
     componentDidMount() {
@@ -87,8 +92,12 @@ class TopicEditor extends Component {
     
     
     render() {
+
+        let modalClose = () => this.setState({ modalShow: false });
+
         return (
             <Container fluid className="Editor-page-container">
+
                 <Row className="d-flex justify-content-between mt-3 pl-4 pr-4">
                     <Link to="/admin">
                         <h4><i className="fas fa-arrow-circle-left"></i> Back to topics</h4>
@@ -97,20 +106,74 @@ class TopicEditor extends Component {
                         <h3>Topic <span style={{color:"#ca1111"}}>"{this.props.currentTopic ? this.props.currentTopic.name: ''}"</span> is now being edited... </h3>
                     : <h3 style={{color:"#ca1111"}}>{this.state.topicName}</h3> }
                 </Row>
-                <Form className="mt-4">
-                    <Form.Group as={Row} controlId="formPlaintextTopic">    
-                        <Form.Label column sm="1">
-                            Topic name
-                        </Form.Label>
-                        <Col sm="5" style={{marginLeft:"-24px"}}>
-                            <Form.Control type="text" 
-                                            placeholder="Enter here..."
-                                            value = {this.state.topicName} 
-                                            onChange = {this.handleTopic}              
-                            />
-                        </Col>
-                    </Form.Group>
-                </Form>
+
+                <Row className="mt-4">
+                    <Col xs={6}>
+                        <Form>
+                            <Form.Group as={Row} controlId="formPlaintextTopic">    
+                                <Form.Label column sm="2">
+                                    Topic name
+                                </Form.Label>
+                                <Col xs={10} style={{marginLeft:"-24px"}}>
+                                    <Form.Control type="text" 
+                                                    placeholder="Enter here..."
+                                                    value = {this.state.topicName} 
+                                                    onChange = {this.handleTopic}              
+                                                    />
+                                </Col>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+
+                    <Col xs={{ span: 2, offset: 4}}>
+                        <ButtonToolbar>
+                            <Button variant="outline-dark" 
+                                    block
+                                    onClick = {() => {
+                                        this.setState({modalShow: true});
+                                    }}
+                            > 
+                                Create test
+                            </Button>
+
+                            <ModalInput 
+                                show={this.state.modalShow}
+                                onHide={modalClose}
+                                onSave = {this.createTest}
+                                modalTitle = "New test" 
+                            >   
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text><i className="far fa-file-alt"></i></InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control
+                                        aria-describedby = "course-icon"
+                                        placeholder = "Enter name..."
+                                        onChange = {this.handleTestName}
+                                    />
+                                </InputGroup>
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text><i className="fas fa-sort-numeric-down"></i></InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control as="select"
+                                        aria-describedby = "course-icon"
+                                        placeholder = "Enter ..."
+                                        onChange = {this.handleTestTime}
+                                    >
+                                        <option>5</option>
+                                        <option>10</option>
+                                        <option>15</option>
+                                        <option>20</option>
+                                        <option>25</option>
+                                        <option>30</option>
+                                    </Form.Control>
+                                </InputGroup>
+                            </ModalInput> 
+                        </ButtonToolbar>
+                    </Col>
+                </Row>
+
                 <div className="editor-container">
                     <div className="editor-left">
                         <textarea id='editor' value={this.state.markdown} onChange={this.handleEditor}/>
@@ -122,6 +185,7 @@ class TopicEditor extends Component {
                         />
                     </div>
                 </div>
+
                 <Row>
                     <Col  xs={{span:2, offset: 8}}>
                         <Button variant="danger"
@@ -140,13 +204,18 @@ class TopicEditor extends Component {
                         </Button>
                     </Col>
                 </Row>
+
             </Container>
         )
     }
     
-    handleEditor = e => this.setState({ markdown: e.target.value })
+    handleEditor = e => this.setState({ markdown: e.target.value });
 
-    handleTopic = e => this.setState({ topicName: e.target.value })
+    handleTopic = e => this.setState({ topicName: e.target.value });
+
+    handleTestName = e => this.setState({testName: e.target.value});
+
+    handleTestTime = e => this.setState({testTime: e.target.value});
 
     deleteCurTopic(e) {
         e.preventDefault();
@@ -155,8 +224,12 @@ class TopicEditor extends Component {
 
     sendEditText(e) {
         e.preventDefault();
-        console.log(this.props.currentTopic)
         this.props.create_topic(this.state.topicName, this.state.markdown, this.props.courseId, this.props.currentTopic);
+    }
+
+    createTest(){
+        this.props.create_test(this.state.testName, this.state.testTime, this.props.currentTopic.id);
+        console.log(this.state.testName, this.state.testTime, this.props.currentTopic.id)
     }
 }
 
@@ -165,7 +238,9 @@ const mapStateToProps = state => ({
     newTopic: state.topic.topicItem,
     topicId: state.topic.currentId,
     currentTopic: state.topic.currentTopic,
-    courseId: state.course.courseId
+    courseId: state.course.courseId,
+    tests: state.test.allTests,
+    newTest: state.test.testItem
 })
 
-export default connect(mapStateToProps, { create_topic, delete_topic })(TopicEditor);
+export default connect(mapStateToProps, { create_topic, delete_topic, create_test })(TopicEditor);
