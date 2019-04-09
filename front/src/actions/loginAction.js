@@ -1,7 +1,6 @@
 import { LOGIN, SIGNUP, LOGOUT, ERROR_OCCURED } from './types';
 
 export const login = (login, password) => dispatch => {
-    console.error(`FETCH LOGIN >`)
     fetch("/login", {
         headers: {
             'Accept': 'application/json',
@@ -37,7 +36,7 @@ export const login = (login, password) => dispatch => {
 }
 
 export const signup = (login, password) => dispatch => {
-    fetch("http://localhost:5000/signup", {
+    fetch("/signup", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -70,10 +69,9 @@ export const signup = (login, password) => dispatch => {
 }
 
 export const logout = () => dispatch => {
-    fetch("http://localhost:5000/logout")
+    fetch("/logout")
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         dispatch({
             type: LOGOUT,
             payload: data

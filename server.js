@@ -429,10 +429,11 @@ app.post('/signup', async(req, res) => {
 
 //----------------- LOGOUT -----------------
 app.get('/logout', (req, res) => {
-    console.log("session - ",req.session)
-    console.log("session auth - ", req.session.auth)
-    res.status(200);
-    res.end();
+    if (req.session) {
+        req.session = null;
+        res.status(200);
+        res.end(JSON.stringify({ session: 'erased'}));
+    }
 })
 // -----------------------------------------
 

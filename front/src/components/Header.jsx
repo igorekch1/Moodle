@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Container, Row, Col, Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import { connect } from "react-redux";
 import { logout } from "../actions/loginAction";
 
@@ -20,11 +21,13 @@ class Header extends Component{
                         Signed in as: {this.props.user}
                     </Col>
                     <Col xs="true" className="Logout-btn">
-                        <Button variant="danger"
-                                onClick = {this.log_out}
-                        >
-                            Log out
-                        </Button>
+                            <Button variant="danger"
+                                    onClick = {this.log_out}
+                            >
+                                <Link to="/" className="logout-btn">
+                                    Log out
+                                </Link>
+                            </Button>
                     </Col>
                 </Row>
             </Container>
@@ -35,7 +38,6 @@ class Header extends Component{
     log_out(e) {
         e.preventDefault();
         this.props.logout();
-        console.log("LOGOUTED")
     }
 }
 

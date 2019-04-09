@@ -14,7 +14,7 @@ export const set_current_topic = (topic) => dispatch => {
 }
 
 export const fetch_topics = (id) => async dispatch => {
-    fetch(`http://localhost:5000/topics/${id}`)
+    fetch(`/topics/${id}`)
     .then(res => res.json())
     .then(topics => {
         dispatch({
@@ -25,7 +25,7 @@ export const fetch_topics = (id) => async dispatch => {
 }
 
 export const create_topic = (name, content, id, currentTopic) => dispatch => {
-    fetch(`http://localhost:5000/topics/${id}`, {
+    fetch(`/topics/${id}`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ export const create_topic = (name, content, id, currentTopic) => dispatch => {
 }
 
 export const delete_topic = id => dispatch => {
-    fetch(`http://localhost:5000/topics/del`, {
+    fetch(`/topics/del`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

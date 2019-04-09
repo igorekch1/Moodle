@@ -47,7 +47,6 @@ export default function(state = initialState, action) {
         }
 
         case LOGOUT:
-        console.log(action.payload)
         return {
             ...state,
             loggedIn: false,

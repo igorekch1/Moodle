@@ -8,7 +8,7 @@ export const set_current_test = (test) => dispatch => {
 }
 
 export const create_test = (name, description, time, topicId) => dispatch => {
-    fetch(`http://localhost:5000/tests/${topicId}`, {
+    fetch(`/tests/${topicId}`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export const create_test = (name, description, time, topicId) => dispatch => {
 }
 
 export const fetch_tests = (id) => async dispatch => {
-    fetch(`http://localhost:5000/tests/${id}`)
+    fetch(`/tests/${id}`)
     .then(res => res.json())
     .then(tests => {
         dispatch({
@@ -41,7 +41,7 @@ export const fetch_tests = (id) => async dispatch => {
 }
 
 export const delete_test = (id) => dispatch => {
-    fetch(`http://localhost:5000/tests/del`, {
+    fetch(`/tests/del`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ export const delete_test = (id) => dispatch => {
 }
 
 export const update_test = (id,name) => dispatch => {
-    fetch(`http://localhost:5000/tests/update`, {
+    fetch(`/tests/update`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ export const update_test = (id,name) => dispatch => {
 }
 
 export const fetch_questions = (id) => dispatch => {
-    fetch(`http://localhost:5000/questions/${id}`)
+    fetch(`/questions/${id}`)
     .then(res => res.json())
     .then(question => {
         dispatch({
@@ -91,7 +91,7 @@ export const fetch_questions = (id) => dispatch => {
 }
 
 export const create_question = (text, answers, testId) => dispatch => {
-    fetch(`http://localhost:5000/questions/${testId}`, {
+    fetch(`/questions/${testId}`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'

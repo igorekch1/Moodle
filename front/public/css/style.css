@@ -145,4 +145,13 @@
 .bm-item.menu-item {
     padding: 4px 0 4px 10px;
 }
+
+.logout-btn {
+    color: #fff;
+}
+
+.logout-btn:hover {
+    color: #fff;
+    text-decoration: none;
+}
 /* MAIN PAGE END */

@@ -36,7 +36,7 @@ export const reset_current_courseid = () => dispatch => {
 }
 
 export const fetch_courses = () => dispatch => {
-    fetch("http://localhost:5000/courses")
+    fetch("/courses")
     .then(res => res.json())
     .then(courses => {
         dispatch({
@@ -47,7 +47,7 @@ export const fetch_courses = () => dispatch => {
 }
 
 export const create_course = (name, description) => dispatch => {
-    fetch("http://localhost:5000/courses", {
+    fetch("/courses", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ export const create_course = (name, description) => dispatch => {
 }
 
 export const update_course = (course) => dispatch => {
-    fetch(`http://localhost:5000/courses/update`, {
+    fetch("/courses/update", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ export const update_course = (course) => dispatch => {
 }
 
 export const delete_course = id => dispatch => {
-    fetch(`http://localhost:5000/courses/del`, {
+    fetch("/courses/del", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
