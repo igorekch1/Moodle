@@ -1,7 +1,8 @@
 import { LOGIN, SIGNUP, LOGOUT, ERROR_OCCURED } from './types';
 
 export const login = (login, password) => dispatch => {
-    fetch("http://localhost:5000/login", {
+    console.error(`FETCH LOGIN >`)
+    fetch("/login", {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

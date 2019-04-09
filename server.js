@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const cookieSession = require('cookie-session');
+const cookieSession = require('cookie-session');
 const Sequelize = require('sequelize');
-var session = require('express-session');
+// var session = require('express-session/
 const port = process.env.PORT || 5000;
 
 const sequelize = new Sequelize('moodle', 'root', 'Kingkongloxlox123',  {
@@ -122,25 +122,25 @@ app.use(
         credentials: 'include'
     })
 );
-// app.use(
-    //     cookieSession({
-        //         name: 'session',
-        //         keys: ["key1", "key2"]
-        //     })
-        // );
+app.use(
+        cookieSession({
+                name: 'session',
+                keys: ["key1", "key2"]
+            })
+        );
         
 app.set("trust proxy", 1); // trust first proxy
 // session
-app.use(
-    session({ 
-        secret: "topSecret", 
-        cookie: { 
-            maxAge: 60000, 
-            secure: false,
-            httpOnly: false
-        }
-    })
-);
+// app.use(
+//     session({ 
+//         secret: "topSecret", 
+//         cookie: { 
+//             maxAge: 60000, 
+//             secure: false,
+//             httpOnly: false
+//         }
+//     })
+// );
 
 //------- Post a new Course w/ checking if exists -------
 app.post('/courses', async(req,res) => {

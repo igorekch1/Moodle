@@ -46,7 +46,8 @@ class TestPage extends Component {
 
 const mapStateToProps = state => ({
     questions: state.test.allQuestions,
-    currentTest: state.test.currentTest
+    currentTest: state.test.currentTest,
+    userName: state.login.userName
 })
 
 export default connect(mapStateToProps, {fetch_questions})(TestPage);

@@ -31,7 +31,7 @@ class MainPage extends Component {
             <div>
 
                 <Row noGutters className="mainpage-header">
-                    <Col xs={'auto'}>Logotype</Col>
+                    <Col xs={'auto'}>Test System</Col>
                     <Col xs={'auto'}>
                         <Signup/>
                     </Col>
