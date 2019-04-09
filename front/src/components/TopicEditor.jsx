@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { fetch_topics, create_topic, delete_topic } from "../actions/topicAction";
-import { create_test } from "../actions/testAction";
 import { Link } from 'react-router-dom';
 import {Container, Button, Row, Col, Form, ButtonToolbar, InputGroup} from "react-bootstrap";
-import ModalInput from "./ModalInput";
 
 const initialMarkdown = `
 
@@ -66,14 +64,11 @@ class TopicEditor extends Component {
         this.state = {
             modalShow: false,
             markdown: '',
-            topicName: '',
-            testName: '',
-            testTime: null
+            topicName: ''
         }
 
         this.sendEditText = this.sendEditText.bind(this);
         this.deleteCurTopic = this.deleteCurTopic.bind(this);
-        this.createTest = this.createTest.bind(this);
     }
 
     componentDidMount() {
@@ -92,8 +87,6 @@ class TopicEditor extends Component {
     
     
     render() {
-
-        let modalClose = () => this.setState({ modalShow: false });
 
         return (
             <Container fluid className="Editor-page-container">
@@ -124,53 +117,8 @@ class TopicEditor extends Component {
                             </Form.Group>
                         </Form>
                     </Col>
-
-                    <Col xs={{ span: 2, offset: 4}}>
-                        <ButtonToolbar>
-                            <Button variant="outline-dark" 
-                                    block
-                                    onClick = {() => {
-                                        this.setState({modalShow: true});
-                                    }}
-                            > 
-                                Create test
-                            </Button>
-
-                            <ModalInput 
-                                show={this.state.modalShow}
-                                onHide={modalClose}
-                                onSave = {this.createTest}
-                                modalTitle = "New test" 
-                            >   
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Prepend>
-                                        <InputGroup.Text><i className="far fa-file-alt"></i></InputGroup.Text>
-                                    </InputGroup.Prepend>
-                                    <Form.Control
-                                        aria-describedby = "course-icon"
-                                        placeholder = "Enter name..."
-                                        onChange = {this.handleTestName}
-                                    />
-                                </InputGroup>
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Prepend>
-                                        <InputGroup.Text><i className="fas fa-sort-numeric-down"></i></InputGroup.Text>
-                                    </InputGroup.Prepend>
-                                    <Form.Control as="select"
-                                        aria-describedby = "course-icon"
-                                        placeholder = "Enter ..."
-                                        onChange = {this.handleTestTime}
-                                    >
-                                        <option>5</option>
-                                        <option>10</option>
-                                        <option>15</option>
-                                        <option>20</option>
-                                        <option>25</option>
-                                        <option>30</option>
-                                    </Form.Control>
-                                </InputGroup>
-                            </ModalInput> 
-                        </ButtonToolbar>
+                    <Col md={{ span: 2, offset: 4 }} style={{fontSize: '20px'}}>
+                        <Link to='/testcreator'>View tests</Link>
                     </Col>
                 </Row>
 
@@ -213,10 +161,6 @@ class TopicEditor extends Component {
 
     handleTopic = e => this.setState({ topicName: e.target.value });
 
-    handleTestName = e => this.setState({testName: e.target.value});
-
-    handleTestTime = e => this.setState({testTime: e.target.value});
-
     deleteCurTopic(e) {
         e.preventDefault();
         this.props.delete_topic(this.props.currentTopic.id);
@@ -226,11 +170,6 @@ class TopicEditor extends Component {
         e.preventDefault();
         this.props.create_topic(this.state.topicName, this.state.markdown, this.props.courseId, this.props.currentTopic);
     }
-
-    createTest(){
-        this.props.create_test(this.state.testName, this.state.testTime, this.props.currentTopic.id);
-        console.log(this.state.testName, this.state.testTime, this.props.currentTopic.id)
-    }
 }
 
 const mapStateToProps = state => ({
@@ -238,9 +177,7 @@ const mapStateToProps = state => ({
     newTopic: state.topic.topicItem,
     topicId: state.topic.currentId,
     currentTopic: state.topic.currentTopic,
-    courseId: state.course.courseId,
-    tests: state.test.allTests,
-    newTest: state.test.testItem
+    courseId: state.course.courseId
 })
 
-export default connect(mapStateToProps, { create_topic, delete_topic, create_test })(TopicEditor);
+export default connect(mapStateToProps, { create_topic, delete_topic })(TopicEditor);

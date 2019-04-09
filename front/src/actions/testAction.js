@@ -1,6 +1,13 @@
-import { FETCH_TESTS, CREATE_TEST } from "./types";
+import { FETCH_TESTS, CREATE_TEST, SET_CURRENT_TEST, DELETE_TEST, UPDATE_TEST, FETCH_QUESTIONS, CREATE_QUESTION } from "./types";
 
-export const create_test = (name, time, topicId) => dispatch => {
+export const set_current_test = (test) => dispatch => {
+    dispatch({
+        type: SET_CURRENT_TEST,
+        payload: test
+    })
+}
+
+export const create_test = (name, description, time, topicId) => dispatch => {
     fetch(`http://localhost:5000/tests/${topicId}`, {
         headers: {
             'Accept': 'application/json',
@@ -9,6 +16,7 @@ export const create_test = (name, time, topicId) => dispatch => {
         method: "POST",
         body: JSON.stringify({
             name,
+            description,
             time
         })
     })
@@ -31,3 +39,75 @@ export const fetch_tests = (id) => async dispatch => {
         })
     })
 }
+
+export const delete_test = (id) => dispatch => {
+    fetch(`http://localhost:5000/tests/del`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+        body: JSON.stringify({id})
+    })
+    .then(res => res.json())
+    .then(data => {
+        dispatch({
+            type: DELETE_TEST,
+            payload: data
+        })
+    })
+}
+
+export const update_test = (id,name) => dispatch => {
+    fetch(`http://localhost:5000/tests/update`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "PUT",
+        body: JSON.stringify({
+            id,
+            name
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        dispatch({
+            type: UPDATE_TEST,
+            payload: data
+        })
+    })
+}
+
+export const fetch_questions = (id) => dispatch => {
+    fetch(`http://localhost:5000/questions/${id}`)
+    .then(res => res.json())
+    .then(question => {
+        dispatch({
+            type: FETCH_QUESTIONS,
+            payload: question
+        })
+    })
+}
+
+export const create_question = (text, answers, testId) => dispatch => {
+    fetch(`http://localhost:5000/questions/${testId}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+            text,
+            answers
+        })
+    })
+    .then(res => res.json())
+    .then(question => {
+        dispatch({
+            type: CREATE_QUESTION,
+            payload: question
+        })
+    })
+}
+

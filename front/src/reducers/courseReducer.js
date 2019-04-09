@@ -38,9 +38,9 @@ export default function(state = initialState, action) {
                 course.description = action.payload.description
             }
         })
-            return {
-                ...state
-            }   
+        return {
+            ...state
+        }   
             
         case SET_CURRENT_COURSEID:
             return {

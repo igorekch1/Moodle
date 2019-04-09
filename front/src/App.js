@@ -8,6 +8,7 @@ import AdminPage from './components/AdminPage';
 import TopicEditor from "./components/TopicEditor";
 import CoursesPage from "./components/CoursesPage";
 import TopicPage from "./components/TopicPage";
+import TestCreator from "./components/TestCreator";
 import TestEditor from "./components/TestEditor";
  
 class App extends Component {
@@ -29,6 +30,7 @@ class App extends Component {
               <Route path = "/editor" component = {TopicEditor}/>
               <Route path = "/topic" component = {TopicPage}/>
               <Route path = "/courses" component = {CoursesPage}/>
+              <Route path = "/testcreator" component = {TestCreator}/>
               <Route path = "/testeditor" component = {TestEditor}/>
             </Switch>
           </div>

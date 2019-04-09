@@ -75,18 +75,15 @@ const Topic = sequelize.define('topics', {
 
 const Test = sequelize.define('tests', {
     name: Sequelize.STRING,
+    description: Sequelize.STRING,
     time: Sequelize.INTEGER
 });
 
 const Question = sequelize.define('questions', {
     testId: Sequelize.INTEGER,
-    name: Sequelize.STRING,
-    type : Sequelize.ENUM("CHECKBOX","RADIOBUTTON")
-});
-
-const Answer = sequelize.define('answers', {
-    testId: Sequelize.INTEGER,
-    name: Sequelize.STRING // then split + join (checkboxes)
+    questionText: Sequelize.STRING,
+    answers: Sequelize.STRING,
+    rightAnswer: Sequelize.STRING   
 });
 
 User.belongsToMany(Course,{through: "user_course"});
@@ -97,18 +94,20 @@ Course.hasMany(Topic, {
 });
 Topic.belongsTo(Course);
 
-Topic.hasMany(Test);
+Topic.hasMany(Test, {
+    onDelete: 'cascade'
+});
 Test.belongsTo(Topic);
 
-Test.hasMany(Question);
+Test.hasMany(Question, {
+    onDelete: 'cascade'
+});
 Question.belongsTo(Test);
-
-Test.hasMany(Answer);
-Answer.belongsTo(Test);
 
 User.belongsToMany(Test, {
     through: "user_test"
 });
+
 Test.belongsToMany(User, {
     through: "user_test"
 });
@@ -287,6 +286,7 @@ app.post('/tests/:topicId', async(req,res) => {
     if(!foundTest){   
         let newTest = await Test.create({
             name : req.body.name,
+            description: req.body.description,
             time : req.body.time,
             topicId : req.params.topicId
         });
@@ -299,22 +299,14 @@ app.post('/tests/:topicId', async(req,res) => {
 //-------------------------------------------------------
 
 //------- UPDATE TEST ---------
-app.put('/test/update', async(req,res) => {
+app.put('/tests/update', async(req,res) => {
     console.log(req.body)
     
-    if (req.body.name) {
-        let updatedTest = await Test.update({
-            name: req.body.name
-        }, { 
-            where : {id : req.body.id} 
-        })
-    } else {
-        let updatedTest = await Test.update({
-            time: req.body.time
-        }, { 
-            where : {id : req.body.id} 
-        })
-    }
+    let updatedTest = await Test.update({
+        name: req.body.name
+    }, { 
+        where : {id : req.body.id} 
+    })
     
     let foundTest = await Test.findOne({
         where : {
@@ -337,6 +329,51 @@ app.delete('/tests/del', async (req,res) => {
     })
     res.status(200).end(JSON.stringify({removed: true, id: removedId}))
 })
+//-------------------------------------------------------
+
+//------- GET ALL QUESTION FROM CONCRETE TEST -------
+app.get('/questions/:testId', async(req,res) => {
+    // console.dir(Topic.__proto__)
+    console.dir(Test.__proto__.__proto__)
+    let testId = await Test.findByPk(req.params.testId);
+    let questions = await testId.getQuestions();
+    console.log(JSON.stringify(questions))
+    res.status(200);
+    res.end(JSON.stringify(questions)); 
+});
+//----------------------------------------------------
+
+//------- Create new Question -------
+app.post('/questions/:testId', async(req,res) => {
+    let rightAnswer;
+    let answerArr = req.body.answers.split(",").map(item => {
+        item = item.trim();
+        if (item.startsWith("##")) {
+            item = item.slice(2);
+            rightAnswer = item;
+        }
+        return item;
+    })
+    console.log(JSON.stringify(answerArr))
+    let foundQuestion = await Question.findOne({
+        where : {
+            questionText : req.body.text
+        }
+    });
+
+    if(!foundQuestion){   
+        let newQuestion = await Question.create({
+            questionText : req.body.text,
+            answers: JSON.stringify(answerArr),
+            rightAnswer,
+            testId : req.params.testId
+        });
+        res.status(201);
+        res.end(JSON.stringify(newQuestion));
+    } else {
+        res.status(409).json({error: 'alreadyExists'});
+    }
+});
 //-------------------------------------------------------
 
 //------- Login w/ checking the role og user(teacher/student) --------
