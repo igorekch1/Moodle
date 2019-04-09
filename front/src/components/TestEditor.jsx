@@ -54,6 +54,9 @@ class TestEditor extends Component {
 
                     <Col xs={5}>
                         <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                                <InputGroup.Text>Test name</InputGroup.Text>
+                            </InputGroup.Prepend>
                             <FormControl
                                 placeholder="Recipient's username"
                                 aria-label="Recipient's username"

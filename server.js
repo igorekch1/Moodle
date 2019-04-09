@@ -354,7 +354,7 @@ app.post('/questions/:testId', async(req,res) => {
         }
         return item;
     })
-    console.log(JSON.stringify(answerArr))
+    
     let foundQuestion = await Question.findOne({
         where : {
             questionText : req.body.text

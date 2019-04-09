@@ -10,6 +10,7 @@ import CoursesPage from "./components/CoursesPage";
 import TopicPage from "./components/TopicPage";
 import TestCreator from "./components/TestCreator";
 import TestEditor from "./components/TestEditor";
+import TestPage from "./components/TestPage";
  
 class App extends Component {
   render() {
@@ -32,6 +33,7 @@ class App extends Component {
               <Route path = "/courses" component = {CoursesPage}/>
               <Route path = "/testcreator" component = {TestCreator}/>
               <Route path = "/testeditor" component = {TestEditor}/>
+              <Route path = "/testpage" component = {TestPage}/>
             </Switch>
           </div>
         </Router>

@@ -37,64 +37,71 @@ class TestCreator extends Component {
         return (
             <Container fluid className="Container">
                 <Header user = {this.props.userName}/>
-                <Row className="justify-content-center mt-4">
-                    <ButtonToolbar>
-                        <Button variant="outline-dark" 
-                                block
-                                onClick = {() => {
-                                    this.setState({modalShow: true});
-                                }}
-                        > 
-                            Create test
-                        </Button>
+                <Row className="mt-4">
+                    <Col xs={2} className="ml-4">
+                        <Link to="/editor">
+                            <h4><i className="fas fa-arrow-circle-left"></i> Back to topic</h4>
+                        </Link>
+                    </Col>
+                    <Col md={{span: 2, offset: 3}}>
+                        <ButtonToolbar>
+                            <Button variant="outline-dark" 
+                                    block
+                                    onClick = {() => {
+                                        this.setState({modalShow: true});
+                                    }}
+                                    > 
+                                Create test
+                            </Button>
 
-                        <ModalInput 
-                            show={this.state.modalShow}
-                            onHide={modalClose}
-                            onSave = {this.createTest}
-                            modalTitle = "New test" 
-                        >   
-                            <InputGroup className="mb-3">
-                                <InputGroup.Prepend>
-                                    <InputGroup.Text><i className="far fa-file-alt"></i></InputGroup.Text>
-                                </InputGroup.Prepend>
-                                <Form.Control
-                                    aria-describedby = "course-icon"
-                                    placeholder = "Enter name..."
-                                    onChange = {this.handleTestName}
-                                />
-                            </InputGroup>
-                            <InputGroup className="mb-3">
-                                <InputGroup.Prepend>
-                                    <InputGroup.Text><i className="far fa-file-alt"></i></InputGroup.Text>
-                                </InputGroup.Prepend>
-                                <Form.Control
-                                    aria-describedby = "course-icon"
-                                    placeholder = "Enter description..."
-                                    onChange = {this.handleTestDescription}
-                                />
-                            </InputGroup>
-                            <InputGroup className="mb-3">
-                                <InputGroup.Prepend>
-                                    <InputGroup.Text><i className="fas fa-sort-numeric-down"></i></InputGroup.Text>
-                                </InputGroup.Prepend>
-                                <Form.Control as="select"
-                                    aria-describedby = "course-icon"
-                                    placeholder = "Enter ..."
-                                    onChange = {this.handleTestTime}
-                                >
-                                    <option>5</option>
-                                    <option>10</option>
-                                    <option>15</option>
-                                    <option>20</option>
-                                    <option>25</option>
-                                    <option>30</option>
-                                </Form.Control>
-                            </InputGroup>
-                        </ModalInput> 
-                    </ButtonToolbar>
+                            <ModalInput 
+                                show={this.state.modalShow}
+                                onHide={modalClose}
+                                onSave = {this.createTest}
+                                modalTitle = "New test" 
+                                >   
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text><i className="far fa-file-alt"></i></InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control
+                                        aria-describedby = "course-icon"
+                                        placeholder = "Enter name..."
+                                        onChange = {this.handleTestName}
+                                        />
+                                </InputGroup>
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text><i className="far fa-file-alt"></i></InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control
+                                        aria-describedby = "course-icon"
+                                        placeholder = "Enter description..."
+                                        onChange = {this.handleTestDescription}
+                                        />
+                                </InputGroup>
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text><i className="fas fa-sort-numeric-down"></i></InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control as="select"
+                                        aria-describedby = "course-icon"
+                                        placeholder = "Enter ..."
+                                        onChange = {this.handleTestTime}
+                                        >
+                                        <option>5</option>
+                                        <option>10</option>
+                                        <option>15</option>
+                                        <option>20</option>
+                                        <option>25</option>
+                                        <option>30</option>
+                                    </Form.Control>
+                                </InputGroup>
+                            </ModalInput> 
+                        </ButtonToolbar>
+                    </Col>
                 </Row>
-                <Row className="justify-content-md-center" noGutters>
+                <Row className="justify-content-md-center mt-3" noGutters>
                     {this.props.tests.map((test) => {
                         return  <Card bg="secondary" 
                                       text="white" 
