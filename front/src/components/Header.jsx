@@ -42,7 +42,7 @@ class Header extends Component{
 }
 
 const mapStateToProps = state => ({
-
+    loggedIn: state.login.loggedIn
 })
 
-export default connect ( null, { logout })(Header);
+export default connect ( mapStateToProps, { logout })(Header);

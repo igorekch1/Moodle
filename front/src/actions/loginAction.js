@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, LOGOUT, ERROR_OCCURED } from './types';
+import { LOGIN, SIGNUP, LOGOUT, ERROR_OCCURED, WHOAMI } from './types';
 
 export const login = (login, password) => dispatch => {
     fetch("/login", {
@@ -77,4 +77,15 @@ export const logout = () => dispatch => {
             payload: data
         })
     })
+}
+
+export const exec_whoami = () => dispatch => {
+    fetch("/whoami")
+    .then(res => res.json())
+    .then(data =>
+        dispatch({
+          type: WHOAMI,
+          payload: data
+        })
+    )
 }

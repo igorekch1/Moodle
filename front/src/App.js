@@ -11,15 +11,35 @@ import TopicPage from "./components/TopicPage";
 import TestCreator from "./components/TestCreator";
 import TestEditor from "./components/TestEditor";
 import TestPage from "./components/TestPage";
+import { connect } from "react-redux";
  
 class App extends Component {
+  
+  redirect() {
+    let result = null;
+    let loginState = store.getState().login; 
+    if (loginState.loggedIn) {
+      if (loginState.userRole === "admin") {
+        result = AdminPage;
+      } else if (loginState.userRole === "user"){
+        result = CoursesPage;
+      }
+    } else {
+      result = MainPage;
+    }
+
+    return result;
+  }
+  
   render() {
     return (
-      <Provider store = {store}>
         <Router history = {createHistory()}>
           <div>
             <Switch>
-              <Route path = "/" component = {MainPage} exact/>
+              <Route  path = "/" 
+                      component = {this.redirect()} 
+                      exact
+              />
               <Route path = "/determinant" render={() => (
                 store.getState().login.userRole === "admin" ? (
                   <Redirect to="/admin"/>
@@ -37,7 +57,6 @@ class App extends Component {
             </Switch>
           </div>
         </Router>
-      </Provider>
     );
   }
 }
@@ -46,4 +65,8 @@ store.subscribe(() => {
   localStorage.setItem("reduxState", JSON.stringify(store.getState()));
 });
 
-export default App;
+const mapStateToProps = state => ({
+  loggedIn: state.login.loggedIn
+})
+
+export default connect(mapStateToProps, {})(App);

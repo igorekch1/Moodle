@@ -434,8 +434,19 @@ app.get('/logout', (req, res) => {
         res.status(200);
         res.end(JSON.stringify({ session: 'erased'}));
     }
-})
+});
 // -----------------------------------------
+
+//--------------- WHOAMI -------------------
+app.get("/whoami", async (req, res) => {
+    res.end(
+      req.session.auth
+        ? JSON.stringify(req.session.auth)
+        : JSON.stringify({ session: "empty" })
+    );
+    res.status(200);
+  });
+//------------------------------------------
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
