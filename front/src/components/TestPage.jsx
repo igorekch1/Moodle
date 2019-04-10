@@ -49,7 +49,7 @@ class TestPage extends Component {
                             <Link to = "/testresult"
                                 className="myLink"
                                 >
-                                View result
+                                View last result
                             </Link>
                         </Button>
                     </Col>
