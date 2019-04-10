@@ -45,7 +45,7 @@ class TestEditor extends Component {
 
                 <Header user = {this.props.userName}/>
                 
-                <Row className="d-flex justify-content-between mt-3 pl-5">
+                <Row noGutters className="d-flex justify-content-between mt-3 pl-5">
                     <Col xs={2}>
                         <Link to="/testcreator">
                             <h4><i className="fas fa-arrow-circle-left"></i> Back to tests</h4>

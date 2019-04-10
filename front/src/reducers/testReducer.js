@@ -1,11 +1,12 @@
-import { FETCH_TESTS, CREATE_TEST, DELETE_TEST, SET_CURRENT_TEST, UPDATE_TEST, CREATE_QUESTION, FETCH_QUESTIONS} from "../actions/types";
+import { TEST_RESULT, FETCH_TESTS, CREATE_TEST, DELETE_TEST, SET_CURRENT_TEST, UPDATE_TEST, CREATE_QUESTION, FETCH_QUESTIONS} from "../actions/types";
 
 const initialState = {
     allTests: [],
     testItem: {},
     currentTest: null,
     allQuestions: [],
-    questionItem: {}
+    questionItem: {},
+    testResult: null
 }
 
 export default function(state = initialState, action) {
@@ -59,6 +60,13 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 questionItem: action.payload
+            }
+
+        case TEST_RESULT: 
+        console.log(action.payload)
+            return {
+                ...state,
+                testResult: action.payload   
             }
         
         default:

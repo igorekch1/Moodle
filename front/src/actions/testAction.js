@@ -1,4 +1,4 @@
-import { FETCH_TESTS, CREATE_TEST, SET_CURRENT_TEST, DELETE_TEST, UPDATE_TEST, FETCH_QUESTIONS, CREATE_QUESTION } from "./types";
+import { TEST_RESULT, FETCH_TESTS, CREATE_TEST, SET_CURRENT_TEST, DELETE_TEST, UPDATE_TEST, FETCH_QUESTIONS, CREATE_QUESTION } from "./types";
 
 export const set_current_test = (test) => dispatch => {
     dispatch({
@@ -111,3 +111,22 @@ export const create_question = (text, answers, testId) => dispatch => {
     })
 }
 
+export const send_answers = (answers) => dispatch => {
+    fetch("/testresult", {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+            answers
+        })
+    })
+    .then(data => data.json())
+    .then(res => {
+        dispatch({
+            type: TEST_RESULT,
+            payload: res
+        })
+    })
+}

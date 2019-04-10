@@ -33,6 +33,7 @@ class App extends Component {
   
   render() {
     return (
+      <Provider store = {store}>
         <Router history = {createHistory()}>
           <div>
             <Switch>
@@ -57,6 +58,7 @@ class App extends Component {
             </Switch>
           </div>
         </Router>
+        </Provider>
     );
   }
 }
@@ -69,4 +71,5 @@ const mapStateToProps = state => ({
   loggedIn: state.login.loggedIn
 })
 
-export default connect(mapStateToProps, {})(App);
+export default App;
+// export default connect(mapStateToProps, {})(App);

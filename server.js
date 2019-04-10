@@ -376,6 +376,30 @@ app.post('/questions/:testId', async(req,res) => {
 });
 //-------------------------------------------------------
 
+//------------------- TEST RESULT -----------------------
+app.post("/testresult", async(req,res) => {
+    let answers = req.body.answers;
+    let result = 0;
+
+    answers.map(async (answer) => {
+        let question = await Question.findOne({
+            where: {
+                id: Number(answer.id)
+            }
+        })
+console.log("right - ",question.rightAnswer, typeof question.rightAnswer);
+console.log("your answer - ",answer.chosenAnswer, typeof answer.chosenAnswer)
+        if (question.rightAnswer === answer.chosenAnswer) {
+            console.log("hellow from if")
+            result = result + 1;
+        }
+    });
+
+console.log("result - ",result);
+    res.status(200).json({result});
+})
+//-------------------------------------------------------
+
 //------- Login w/ checking the role og user(teacher/student) --------
 app.post('/login', async(req,res) => {
     let checkUser = await User.findOne({
