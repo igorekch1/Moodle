@@ -16,7 +16,11 @@ class Header extends Component{
             <div className="header-wrapper">
             <Container fluid className="Header">
                 <Row className="justify-content-between" noGutters>
-                    <Col xs="true" className="Header-greeting">Test System</Col>
+                    <Col xs="true" className="Header-greeting">
+                        <Link to="/" className="myLink">
+                            Test System
+                        </Link>
+                    </Col>
                     <Col className="Header-greeting" xs="true">
                         Signed in as: {this.props.user}
                     </Col>
@@ -24,7 +28,7 @@ class Header extends Component{
                             <Button variant="danger"
                                     onClick = {this.log_out}
                             >
-                                <Link to="/" className="logout-btn">
+                                <Link to="/" className="myLink">
                                     Log out
                                 </Link>
                             </Button>

@@ -1,4 +1,13 @@
-import { TEST_RESULT, FETCH_TESTS, CREATE_TEST, SET_CURRENT_TEST, DELETE_TEST, UPDATE_TEST, FETCH_QUESTIONS, CREATE_QUESTION } from "./types";
+import {    TEST_RESULT, 
+            FETCH_TESTS,    
+            CREATE_TEST,
+            SET_CURRENT_TEST,
+            DELETE_TEST,
+            UPDATE_TEST,
+            FETCH_QUESTIONS,
+            CREATE_QUESTION, 
+            RESET_TEST_RESULT    
+        } from "./types";
 
 export const set_current_test = (test) => dispatch => {
     dispatch({
@@ -128,5 +137,11 @@ export const send_answers = (answers) => dispatch => {
             type: TEST_RESULT,
             payload: res
         })
+    })
+}
+
+export const reset_test_result = () => dispatch => {
+    dispatch({
+        type: RESET_TEST_RESULT
     })
 }

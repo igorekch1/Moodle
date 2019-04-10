@@ -379,24 +379,25 @@ app.post('/questions/:testId', async(req,res) => {
 //------------------- TEST RESULT -----------------------
 app.post("/testresult", async(req,res) => {
     let answers = req.body.answers;
-    let result = 0;
+    let correctAnswers = 0;
 
-    answers.map(async (answer) => {
+    for await (let answer of answers) {
         let question = await Question.findOne({
             where: {
                 id: Number(answer.id)
             }
-        })
-console.log("right - ",question.rightAnswer, typeof question.rightAnswer);
-console.log("your answer - ",answer.chosenAnswer, typeof answer.chosenAnswer)
+        });
+        
         if (question.rightAnswer === answer.chosenAnswer) {
-            console.log("hellow from if")
-            result = result + 1;
+            ++correctAnswers
         }
-    });
-
-console.log("result - ",result);
-    res.status(200).json({result});
+    }
+    let result = {
+        correctAnswers,
+        qAnswers: answers.length
+    }
+// console.log("result - ",result);
+    res.status(200).json(result);
 })
 //-------------------------------------------------------
 

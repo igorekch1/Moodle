@@ -146,11 +146,11 @@
     padding: 4px 0 4px 10px;
 }
 
-.logout-btn {
+.myLink {
     color: #fff;
 }
 
-.logout-btn:hover {
+.myLink:hover {
     color: #fff;
     text-decoration: none;
 }

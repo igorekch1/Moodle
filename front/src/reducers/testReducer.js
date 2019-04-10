@@ -1,4 +1,13 @@
-import { TEST_RESULT, FETCH_TESTS, CREATE_TEST, DELETE_TEST, SET_CURRENT_TEST, UPDATE_TEST, CREATE_QUESTION, FETCH_QUESTIONS} from "../actions/types";
+import {    TEST_RESULT, 
+            FETCH_TESTS, 
+            CREATE_TEST, 
+            DELETE_TEST, 
+            SET_CURRENT_TEST, 
+            UPDATE_TEST, 
+            CREATE_QUESTION, 
+            FETCH_QUESTIONS,
+            RESET_TEST_RESULT
+        } from "../actions/types";
 
 const initialState = {
     allTests: [],
@@ -68,6 +77,13 @@ export default function(state = initialState, action) {
                 ...state,
                 testResult: action.payload   
             }
+
+        case RESET_TEST_RESULT:
+        console.log("reseted")
+        return {
+            ...state,
+            testResult: null
+        }
         
         default:
             return state;

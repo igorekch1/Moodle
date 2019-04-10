@@ -12,6 +12,7 @@ import TestCreator from "./components/TestCreator";
 import TestEditor from "./components/TestEditor";
 import TestPage from "./components/TestPage";
 import { connect } from "react-redux";
+import TestResultPage from "./components/TestResultPage";
  
 class App extends Component {
   
@@ -55,6 +56,7 @@ class App extends Component {
               <Route path = "/testcreator" component = {TestCreator}/>
               <Route path = "/testeditor" component = {TestEditor}/>
               <Route path = "/testpage" component = {TestPage}/>
+              <Route path = "/testresult" component = {TestResultPage}/>
             </Switch>
           </div>
         </Router>
