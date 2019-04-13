@@ -7,7 +7,7 @@ const Sequelize = require('sequelize');
 // var session = require('express-session/
 const port = process.env.PORT || 5000;
 
-const sequelize = new Sequelize('moodle', 'root', 'Kingkongloxlox123',  {
+const sequelize = new Sequelize('moodle', '', '',  {
     host: 'localhost',
     dialect: 'mysql',
   
