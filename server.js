@@ -1,14 +1,21 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieSession = require('cookie-session');
 const Sequelize = require('sequelize');
-// var session = require('express-session/
 const port = process.env.PORT || 5000;
+<<<<<<< HEAD
+console.log(process.env);
+const sequelize = new Sequelize('moodle', process.env.USER, process.env.PASS,  {
+    host: process.env.HOST,
+=======
 
-const sequelize = new Sequelize('moodle', 'root', 'Kingkongloxlox123',  {
+const sequelize = new Sequelize('moodle', '', '',  {
     host: 'localhost',
+>>>>>>> a7e1dfb649824095c7fe7e4d2e28f5f15fe4fc72
     dialect: 'mysql',
   
     pool: {
@@ -19,39 +26,6 @@ const sequelize = new Sequelize('moodle', 'root', 'Kingkongloxlox123',  {
     },
   
 }); 
-
-// ------------------TODO------------------
-// For users table add columns : permision(r/w/crud), entity, entityId, list (slice)
-//                                         read        post    100500  "1(id), admin(role), #5(group)"
-//                                         read        user       5    "#5(group), user(role), admin 5lvl(role)"  
-// NEED TO BE CACHED
-
-// const AccessRights = sequelize.define('accessRights', {
-//     permission : Sequelize.STRING,
-//     model: Sequelize.STRING,
-//     modelId: Sequelize.INTEGER,
-//     list: {type: Sequelize.TEXT, {
-//         get() {
-//             return this.getDataValue("slice".split(","))
-//         },
-//         set(newValue) {
-//             newValue = "length" in newValue ? newValue.join(",") : newValue
-//             return this.setDataValue("slice", newValue)
-//         }
-//     }, {
-//         getterMethods: {
-//             async all() {
-
-//             }
-//         },
-//         indexes : {
-//             {
-//                 fields: {"modelId", "model", "permission"}
-//             },
-//         }
-//     });
-
-//-----------------------------------------
 
 const User = sequelize.define('users', {
     login: Sequelize.STRING,
@@ -130,17 +104,7 @@ app.use(
         );
         
 app.set("trust proxy", 1); // trust first proxy
-// session
-// app.use(
-//     session({ 
-//         secret: "topSecret", 
-//         cookie: { 
-//             maxAge: 60000, 
-//             secure: false,
-//             httpOnly: false
-//         }
-//     })
-// );
+
 
 //------- Post a new Course w/ checking if exists -------
 app.post('/courses', async(req,res) => {
