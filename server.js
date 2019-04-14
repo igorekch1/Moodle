@@ -7,15 +7,9 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 const Sequelize = require('sequelize');
 const port = process.env.PORT || 5000;
-<<<<<<< HEAD
-console.log(process.env);
+
 const sequelize = new Sequelize('moodle', process.env.USER, process.env.PASS,  {
     host: process.env.HOST,
-=======
-
-const sequelize = new Sequelize('moodle', '', '',  {
-    host: 'localhost',
->>>>>>> a7e1dfb649824095c7fe7e4d2e28f5f15fe4fc72
     dialect: 'mysql',
   
     pool: {
