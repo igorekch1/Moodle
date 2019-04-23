@@ -2,7 +2,7 @@
 
 ## Description
 * WEB SPA providing user get information of different topics and pass tests based on them.
-* Also, the project includes a possibilty to log in as admin and create/delete/edit/update all courses / topics and tests.
+* Also, the project includes a possibilty to log in as admin and create/delete/edit/update all courses / topics and tests. You may check by using "admin" username and password.
 
 ## Technologies used
 
@@ -10,7 +10,7 @@
 1. Express.js as a Node.js Framework for REST API
 2. MYSQL(MariaDB)
 3. Sequelize.js as an ORM for interacting with database
-4. Cooki-session
+4. Cookie-session
 
 
 #### FRONT-END
